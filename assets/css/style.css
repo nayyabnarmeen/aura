@@ -364,7 +364,7 @@ body {
   margin-top: 10px;
 }
 
-/* FLASHCARD MODAL */
+/* FLASHCARD MODAL — ⭐ SPACED OUT ⭐ */
 .modal-overlay {
   position: fixed;
   inset: 0;
@@ -385,7 +385,34 @@ body {
   background: var(--bg);
   border-radius: var(--radius-lg);
   border: 1px solid var(--glass-border);
-  padding: 16px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.modal-textarea {
+  width: 100%;
+  min-height: 80px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--glass-border);
+  padding: 8px 10px;
+  background: #ffffff;
+  color: #000000;
+  font-family: inherit;
+  font-size: 14px;
+  resize: vertical;
+}
+
+[data-theme="dark"] .modal-textarea {
+  background: #111111;
+  color: #ffffff;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
 }
 
 /* NOTES */
@@ -471,6 +498,13 @@ body {
 .timer-display {
   font-size: 30px;
   font-weight: 600;
+}
+
+/* ⭐ FIX: SPACING BETWEEN START & RESET ⭐ */
+.timer-buttons {
+  display: flex;
+  gap: 12px;
+  margin-top: 14px;
 }
 /* NAVBAR */
 .bottom-nav {

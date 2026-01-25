@@ -241,7 +241,7 @@ function renderDecks() {
 
   names.forEach(name => {
     const card = document.createElement("div");
-    card.className = "glass-card deck-card";
+    card.className = "deck-card";
     card.textContent = name;
 
     card.addEventListener("click", () => openDeck(name));
@@ -588,6 +588,7 @@ function renderPomodoroStats() {
   $("pomodoro-stats-time").textContent = `focused time: ${Math.floor(pomodoroStats.seconds / 60)} min`;
 }
 
+/* TIMER RING SETUP — matches r=90, 220px */
 const ring = document.querySelector(".timer-ring-progress");
 const radius = 90;
 const circumference = 2 * Math.PI * radius;
@@ -611,6 +612,7 @@ function formatTime(sec) {
   return `${m}:${s.toString().padStart(2, "0")}`;
 }
 
+/* START / PAUSE */
 on("pomodoro-toggle", "click", () => {
   if (timerInterval) {
     clearInterval(timerInterval);
@@ -619,6 +621,7 @@ on("pomodoro-toggle", "click", () => {
     return;
   }
 
+  /* If starting fresh */
   if (remainingSeconds === totalSeconds) {
     const hours = Number(hourInput.value) || 0;
     const minutes = Number(minuteInput.value) || 0;
@@ -659,6 +662,7 @@ on("pomodoro-toggle", "click", () => {
   }, 1000);
 });
 
+/* RESET */
 on("pomodoro-reset", "click", () => {
   clearInterval(timerInterval);
   timerInterval = null;
@@ -697,6 +701,7 @@ on("settings-theme-toggle", "click", () => {
   localStorage.setItem("aura-theme", next);
 });
 
+/* Apply saved theme on load */
 (function applySavedTheme() {
   const saved = localStorage.getItem("aura-theme");
   if (saved) {
@@ -713,6 +718,7 @@ function init() {
   renderNotes();
   renderPomodoroStats();
 
+  /* If onboarding already done */
   if (userName) {
     onboardingScreen.style.display = "none";
     appRoot.style.display = "flex";
@@ -726,6 +732,7 @@ function init() {
     document.querySelector('[data-step="3"]').style.display = "none";
   }
 
+  /* Timer initial state */
   timerDisplay.textContent = formatTime(remainingSeconds);
   updateRing();
 }
