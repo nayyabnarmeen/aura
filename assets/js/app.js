@@ -417,7 +417,7 @@ function renderNotes() {
   });
 }
 
-/* ⭐ FIXED: DO NOT HIDE app-root ⭐ */
+/* OPEN NOTE EDITOR */
 function openNoteEditor(index = null) {
   noteEditorOverlay.classList.add("is-visible");
   noteEditorOverlay.style.display = "flex";
@@ -442,12 +442,22 @@ function openNoteEditor(index = null) {
   }
 }
 
-/* ⭐ FIXED: DO NOT SHOW app-root (it was never hidden) ⭐ */
+/* ⭐ THE TWO MISSING LISTENERS (THIS FIXES YOUR ISSUE) ⭐ */
+on("add-note-button", "click", () => {
+  openNoteEditor(null);
+});
+
+on("quick-note-button", "click", () => {
+  openNoteEditor(null);
+});
+
+/* CLOSE EDITOR */
 on("close-note-editor", "click", () => {
   noteEditorOverlay.classList.remove("is-visible");
   noteEditorOverlay.style.display = "none";
 });
 
+/* SAVE NOTE */
 on("save-note-button", "click", () => {
   const title = noteEditorTitle.value.trim();
   const content = noteEditorContent.innerHTML.trim();
@@ -488,6 +498,7 @@ on("save-note-button", "click", () => {
   noteEditorOverlay.style.display = "none";
 });
 
+/* DELETE NOTE */
 on("delete-note-button", "click", () => {
   const editing = noteEditorOverlay.dataset.editing;
   if (editing === "new") {
@@ -506,12 +517,14 @@ on("delete-note-button", "click", () => {
   noteEditorOverlay.style.display = "none";
 });
 
+/* PIN NOTE */
 on("pin-note-button", "click", () => {
   const pinned = pinNoteButton.dataset.pinned === "true";
   pinNoteButton.dataset.pinned = pinned ? "false" : "true";
   pinNoteButton.textContent = pinned ? "pin" : "unpin";
 });
 
+/* SEARCH NOTES */
 notesSearchInput.addEventListener("input", () => {
   noteSearchQuery = notesSearchInput.value.trim();
   renderNotes();
@@ -533,7 +546,7 @@ document.querySelectorAll(".toolbar-button").forEach(btn => {
 });
 
 /* =========================================================
-   THEME TOGGLE (FIXED)
+   THEME TOGGLE
 ========================================================= */
 
 on("settings-theme-toggle", "click", () => {
@@ -603,8 +616,6 @@ on("pomodoro-toggle", "click", () => {
     timerDisplay.textContent = formatTime(remainingSeconds);
     updateRing();
   }
-
-  $("pomodoro-toggle").textContent = "pause";
 
   timerInterval = setInterval(() => {
     remainingSeconds--;
