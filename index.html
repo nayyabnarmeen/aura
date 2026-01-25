@@ -8,75 +8,83 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <!-- Supabase kept for future cloud sync (unused for now) -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 
-  <!-- Login screen (magic link) -->
-  <div id="login-screen">
-    <div class="login-inner">
-      <h1 class="login-title">aura</h1>
-      <p class="login-subtitle">sign in with a magic link</p>
-
-      <input id="login-email" type="email" class="onboarding-input" placeholder="email address" />
-
-      <button id="login-button" class="primary-button full-width">send magic link</button>
-
-      <p id="login-message" class="login-message"></p>
-    </div>
-  </div>
-
-  <!-- Onboarding -->
+  <!-- Onboarding (shows every time) -->
   <div id="onboarding-screen">
     <div class="onboarding-steps">
 
+      <!-- Step 1 -->
       <section class="onboarding-card" data-step="1">
-        <h1 class="onboarding-title">hey, i’m aura</h1>
-        <p class="onboarding-subtitle">let’s set things up so i can support you properly.</p>
+        <header class="onboarding-header">
+          <span class="onboarding-back-placeholder"></span>
+        </header>
 
-        <label class="onboarding-label">what should i call you?</label>
-        <input id="onboarding-name-input" class="onboarding-input" type="text" placeholder="your name" />
+        <div class="onboarding-body">
+          <h1 class="onboarding-title">hey, i’m aura</h1>
+          <p class="onboarding-subtitle">let’s set things up so i can support you properly.</p>
 
-        <button id="onboarding-next-1" class="primary-button full-width">next</button>
-      </section>
+          <label class="onboarding-label">what should i call you?</label>
+          <input id="onboarding-name-input" class="onboarding-input" type="text" placeholder="your name" />
 
-      <section class="onboarding-card" data-step="2">
-        <h1 class="onboarding-title">nice to meet you</h1>
-        <p class="onboarding-subtitle">this helps me keep things personal.</p>
-
-        <label class="onboarding-label">how old are you?</label>
-        <input id="onboarding-age-input" class="onboarding-input" type="number" min="5" max="120" placeholder="your age" />
-
-        <button id="onboarding-next-2" class="primary-button full-width">next</button>
-      </section>
-
-      <section class="onboarding-card" data-step="3">
-        <h1 class="onboarding-title">what brings you here?</h1>
-        <p class="onboarding-subtitle">choose as many as you like.</p>
-
-        <div class="onboarding-checkbox-group">
-          <label class="checkbox-pill">
-            <input type="checkbox" name="purpose" value="study" />
-            <span>study better</span>
-          </label>
-
-          <label class="checkbox-pill">
-            <input type="checkbox" name="purpose" value="focus" />
-            <span>stay focused</span>
-          </label>
-
-          <label class="checkbox-pill">
-            <input type="checkbox" name="purpose" value="organise" />
-            <span>organise my life</span>
-          </label>
-
-          <label class="checkbox-pill">
-            <input type="checkbox" name="purpose" value="revision" />
-            <span>revision & exams</span>
-          </label>
+          <button id="onboarding-next-1" class="primary-button full-width">next</button>
         </div>
+      </section>
 
-        <button id="onboarding-finish" class="primary-button full-width">start aura</button>
+      <!-- Step 2 -->
+      <section class="onboarding-card" data-step="2">
+        <header class="onboarding-header">
+          <button class="onboarding-back-button" data-back-step="1">&lt;</button>
+        </header>
+
+        <div class="onboarding-body">
+          <h1 class="onboarding-title">nice to meet you</h1>
+          <p class="onboarding-subtitle">this helps me keep things personal.</p>
+
+          <label class="onboarding-label">how old are you?</label>
+          <input id="onboarding-age-input" class="onboarding-input" type="number" min="5" max="120" placeholder="your age" />
+
+          <button id="onboarding-next-2" class="primary-button full-width">next</button>
+        </div>
+      </section>
+
+      <!-- Step 3 -->
+      <section class="onboarding-card" data-step="3">
+        <header class="onboarding-header">
+          <button class="onboarding-back-button" data-back-step="2">&lt;</button>
+        </header>
+
+        <div class="onboarding-body">
+          <h1 class="onboarding-title">what brings you here?</h1>
+          <p class="onboarding-subtitle">choose as many as you like.</p>
+
+          <div class="onboarding-checkbox-group">
+            <label class="checkbox-pill">
+              <input type="checkbox" name="purpose" value="study" />
+              <span>study better</span>
+            </label>
+
+            <label class="checkbox-pill">
+              <input type="checkbox" name="purpose" value="focus" />
+              <span>stay focused</span>
+            </label>
+
+            <label class="checkbox-pill">
+              <input type="checkbox" name="purpose" value="organise" />
+              <span>organise my life</span>
+            </label>
+
+            <label class="checkbox-pill">
+              <input type="checkbox" name="purpose" value="revision" />
+              <span>revision & exams</span>
+            </label>
+          </div>
+
+          <button id="onboarding-finish" class="primary-button full-width">start aura</button>
+        </div>
       </section>
 
     </div>

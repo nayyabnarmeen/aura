@@ -63,39 +63,6 @@ body {
   position: relative;
 }
 
-/* LOGIN */
-#login-screen {
-  width: 100%;
-  max-width: 480px;
-  min-height: 100vh;
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.login-inner {
-  width: 100%;
-  padding: 32px 22px;
-}
-
-.login-title {
-  font-size: 32px;
-  margin: 0 0 4px;
-}
-
-.login-subtitle {
-  margin: 0 0 20px;
-  font-size: 14px;
-  color: var(--text-soft);
-}
-
-.login-message {
-  margin-top: 10px;
-  font-size: 13px;
-  color: var(--text-soft);
-}
-
 .app-main {
   flex: 1;
   padding: 16px;
@@ -107,7 +74,7 @@ body {
   position: fixed;
   inset: 0;
   background: var(--bg);
-  display: none;
+  display: flex;
   align-items: center;
   justify-content: center;
   z-index: 50;
@@ -124,6 +91,37 @@ body {
 .onboarding-card {
   min-width: 100vw;
   padding: 32px 22px;
+  display: flex;
+  flex-direction: column;
+}
+
+.onboarding-header {
+  height: 32px;
+  display: flex;
+  align-items: center;
+}
+
+.onboarding-back-placeholder {
+  width: 32px;
+  height: 32px;
+}
+
+.onboarding-back-button {
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+  border: 1px solid var(--glass-border);
+  background: var(--glass);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.onboarding-body {
+  flex: 1;
   display: flex;
   flex-direction: column;
   gap: 18px;

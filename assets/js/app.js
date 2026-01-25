@@ -1,18 +1,16 @@
 /* =========================
-   SUPABASE CLIENT
+   SUPABASE CLIENT (unused for now)
 ========================= */
 
-// replace with your real values from Supabase
-const SUPABASE_URL = "https://hzybqwfqodfgpggluyur.supabase.co";
-const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh6eWJxd2Zxb2RmZ3BnZ2x1eXVyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjkzNTIzNjksImV4cCI6MjA4NDkyODM2OX0.1YapJ-rRTblIt_XDCy2i7aZEtMTYtc3lDoR1g9J1mAc";
+// replace with your real values later if you want cloud sync
+const SUPABASE_URL = "YOUR_SUPABASE_URL";
+const SUPABASE_ANON_KEY = "YOUR_SUPABASE_ANON_KEY";
 
 const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 /* =========================
    STATE
 ========================= */
-
-let user = null;
 
 let userName = localStorage.getItem("aura-name") || "";
 let userAge = localStorage.getItem("aura-age") || "";
@@ -46,11 +44,6 @@ if (ring) {
 /* =========================
    ELEMENTS
 ========================= */
-
-const loginScreen = document.getElementById("login-screen");
-const loginEmailInput = document.getElementById("login-email");
-const loginButton = document.getElementById("login-button");
-const loginMessage = document.getElementById("login-message");
 
 const onboardingScreen = document.getElementById("onboarding-screen");
 const onboardingStepsContainer = document.querySelector(".onboarding-steps");
@@ -104,78 +97,7 @@ function haptic(ms = 20) {
 }
 
 /* =========================
-   AUTH (MAGIC LINKS)
-========================= */
-
-loginButton?.addEventListener("click", async () => {
-  const email = (loginEmailInput.value || "").trim();
-  if (!email) {
-    loginMessage.textContent = "enter an email first.";
-    return;
-  }
-
-  loginMessage.textContent = "sending magic link...";
-  const { error } = await supabaseClient.auth.signInWithOtp({ email });
-
-  if (error) {
-    loginMessage.textContent = "something went wrong. try again.";
-  } else {
-    loginMessage.textContent = "magic link sent. check your email.";
-  }
-});
-
-supabaseClient.auth.onAuthStateChange(async (event, session) => {
-  if (session && session.user) {
-    user = session.user;
-    loginScreen.style.display = "none";
-    appRoot.style.display = "flex";
-
-    const greet = document.getElementById("home-greeting");
-    if (greet && userName) greet.textContent = `hello, ${userName}`;
-
-    if (!userName || !userAge || !userPurpose.length) {
-      onboardingScreen.style.display = "flex";
-      goToOnboardingStep(1);
-    }
-
-    renderTodos();
-    renderDecks();
-    renderNotes();
-    renderPomodoroStats();
-  } else {
-    user = null;
-    appRoot.style.display = "none";
-    loginScreen.style.display = "flex";
-  }
-});
-
-(async () => {
-  const { data } = await supabaseClient.auth.getSession();
-  if (data.session && data.session.user) {
-    user = data.session.user;
-    loginScreen.style.display = "none";
-    appRoot.style.display = "flex";
-
-    const greet = document.getElementById("home-greeting");
-    if (greet && userName) greet.textContent = `hello, ${userName}`;
-
-    if (!userName || !userAge || !userPurpose.length) {
-      onboardingScreen.style.display = "flex";
-      goToOnboardingStep(1);
-    }
-
-    renderTodos();
-    renderDecks();
-    renderNotes();
-    renderPomodoroStats();
-  } else {
-    loginScreen.style.display = "flex";
-    appRoot.style.display = "none";
-  }
-})();
-
-/* =========================
-   ONBOARDING
+   ONBOARDING (every time)
 ========================= */
 
 let onboardingStep = 1;
@@ -193,8 +115,15 @@ function goToOnboardingStep(step) {
 
 function finishOnboarding() {
   onboardingScreen.style.display = "none";
+  appRoot.style.display = "flex";
+
   const greet = document.getElementById("home-greeting");
-  if (greet) greet.textContent = `hello, ${userName}`;
+  if (greet && userName) greet.textContent = `hello, ${userName}`;
+
+  renderTodos();
+  renderDecks();
+  renderNotes();
+  renderPomodoroStats();
 }
 
 /* Step 1 */
@@ -229,6 +158,20 @@ document.getElementById("onboarding-finish")?.addEventListener("click", () => {
   localStorage.setItem("aura-purpose", JSON.stringify(userPurpose));
   finishOnboarding();
 });
+
+/* Back buttons */
+document.querySelectorAll(".onboarding-back-button").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const backStep = parseInt(btn.dataset.backStep, 10);
+    if (!backStep) return;
+    goToOnboardingStep(backStep);
+  });
+});
+
+/* Initial onboarding state */
+onboardingScreen.style.display = "flex";
+appRoot.style.display = "none";
+goToOnboardingStep(1);
 
 /* =========================
    SETTINGS
@@ -832,9 +775,9 @@ document.getElementById("pomodoro-reset")?.addEventListener("click", () => {
   document.getElementById("pomodoro-toggle").textContent = "start";
 });
 
+/* =========================
+   INITIAL RENDER (after onboarding finishes)
+========================= */
+
 updateTimerDisplay();
 updateRing();
-renderPomodoroStats();
-renderTodos();
-renderDecks();
-renderNotes();
