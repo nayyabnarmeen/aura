@@ -13,11 +13,9 @@
 
 <body>
 
-<!-- ONBOARDING -->
 <div id="onboarding-screen">
   <div class="onboarding-steps">
 
-    <!-- STEP 1 -->
     <section class="onboarding-card" data-step="1">
       <header class="onboarding-header">
         <span class="onboarding-back-placeholder"></span>
@@ -34,7 +32,6 @@
       </div>
     </section>
 
-    <!-- STEP 2 -->
     <section class="onboarding-card" data-step="2">
       <header class="onboarding-header">
         <button class="onboarding-back-button" data-back-step="1"></button>
@@ -51,7 +48,6 @@
       </div>
     </section>
 
-    <!-- STEP 3 -->
     <section class="onboarding-card" data-step="3">
       <header class="onboarding-header">
         <button class="onboarding-back-button" data-back-step="2"></button>
@@ -90,12 +86,9 @@
   </div>
 </div>
 
-<!-- APP ROOT -->
 <div id="app-root">
-
   <main class="app-main">
 
-    <!-- HOME -->
     <section class="aura-screen is-active" data-screen="home">
       <header class="screen-header">
         <div>
@@ -123,7 +116,6 @@
       </section>
     </section>
 
-    <!-- DECK LIST -->
     <section class="aura-screen" data-screen="flashcards">
       <header class="screen-header">
         <div>
@@ -137,7 +129,6 @@
       <section id="deck-grid" class="deck-grid"></section>
     </section>
 
-    <!-- FLASHCARD VIEWER -->
     <section class="aura-screen" data-screen="flashcard-viewer">
       <header class="screen-header">
         <button id="back-to-decks" class="icon-button">decks</button>
@@ -145,7 +136,6 @@
       </header>
 
       <section class="glass-card">
-
         <div class="flashcard-wrapper">
           <div id="flashcard" class="flashcard">
             <div id="flashcard-front" class="flashcard-face flashcard-front"></div>
@@ -171,10 +161,9 @@
           <button id="rename-deck-button" class="ghost-button full-width">rename deck</button>
           <button id="delete-deck-button" class="ghost-button full-width danger">delete deck</button>
         </div>
-
       </section>
     </section>
-    <!-- FLASHCARD MODAL -->
+
     <div id="flashcard-modal" class="modal-overlay">
       <div class="modal-card">
         <h2 id="flashcard-modal-title" class="card-title">card</h2>
@@ -192,7 +181,6 @@
       </div>
     </div>
 
-    <!-- NOTES -->
     <section class="aura-screen" data-screen="notes">
       <header class="screen-header">
         <div>
@@ -209,43 +197,6 @@
 
       <section id="notes-list" class="notes-grid"></section>
     </section>
-
-    <!-- NOTE EDITOR -->
-    <div id="note-editor-overlay" class="note-editor-overlay">
-      <div class="note-editor">
-
-        <header class="note-editor-header">
-          <input id="note-editor-title-input" class="note-title-input" placeholder="note title" />
-
-          <div class="note-editor-actions">
-            <button id="pin-note-button" class="ghost-button small">pin</button>
-            <button id="delete-note-button" class="ghost-button small danger">delete</button>
-            <button id="close-note-editor" class="icon-button">close</button>
-          </div>
-        </header>
-
-        <div class="note-tags-row">
-          <input id="note-tags-input" class="onboarding-input" placeholder="tags (comma separated)" />
-        </div>
-
-        <div class="note-toolbar">
-          <button data-command="bold" class="toolbar-button">Bold</button>
-          <button data-command="italic" class="toolbar-button">Italic</button>
-          <button data-command="formatBlock" data-value="h1" class="toolbar-button">H1</button>
-          <button data-command="formatBlock" data-value="h2" class="toolbar-button">H2</button>
-          <button data-command="insertUnorderedList" class="toolbar-button">Bullet</button>
-          <button data-command="insertUnorderedList" data-checklist="true" class="toolbar-button">Checklist</button>
-          <button data-command="formatBlock" data-value="blockquote" class="toolbar-button">Quote</button>
-        </div>
-
-        <div id="note-editor-content" class="note-editor-content" contenteditable="true"></div>
-
-        <button id="save-note-button" class="primary-button full-width save-note-fixed">save note</button>
-
-      </div>
-    </div>
-
-    <!-- TIMER -->
     <section class="aura-screen" data-screen="timer">
       <header class="screen-header">
         <div>
@@ -255,7 +206,6 @@
       </header>
 
       <section class="glass-card timer-card">
-
         <div class="timer-ring-wrapper">
           <svg class="timer-ring" width="220" height="220">
             <circle class="timer-ring-bg" cx="110" cy="110" r="90" />
@@ -283,11 +233,9 @@
           <button id="pomodoro-toggle" class="primary-button full-width">start</button>
           <button id="pomodoro-reset" class="ghost-button full-width">reset</button>
         </div>
-
       </section>
     </section>
 
-    <!-- SETTINGS -->
     <section class="aura-screen" data-screen="settings">
       <header class="screen-header">
         <div>
@@ -309,7 +257,6 @@
 
   </main>
 
-  <!-- BOTTOM NAV -->
   <nav class="bottom-nav">
     <button class="bottom-nav-item is-active" data-screen-target="home"><span>home</span></button>
     <button class="bottom-nav-item" data-screen-target="flashcards"><span>decks</span></button>
@@ -317,9 +264,41 @@
     <button class="bottom-nav-item" data-screen-target="timer"><span>timer</span></button>
     <button class="bottom-nav-item" data-screen-target="settings"><span>settings</span></button>
   </nav>
+</div>
 
+<div id="note-editor-overlay" class="note-editor-overlay">
+  <div class="note-editor">
+    <header class="note-editor-header">
+      <input id="note-editor-title-input" class="note-title-input" placeholder="note title" />
+
+      <div class="note-editor-actions">
+        <button id="pin-note-button" class="ghost-button small">pin</button>
+        <button id="delete-note-button" class="ghost-button small danger">delete</button>
+        <button id="close-note-editor" class="icon-button">close</button>
+      </div>
+    </header>
+
+    <div class="note-tags-row">
+      <input id="note-tags-input" class="onboarding-input" placeholder="tags (comma separated)" />
+    </div>
+
+    <div class="note-toolbar">
+      <button data-command="bold" class="toolbar-button">Bold</button>
+      <button data-command="italic" class="toolbar-button">Italic</button>
+      <button data-command="formatBlock" data-value="h1" class="toolbar-button">H1</button>
+      <button data-command="formatBlock" data-value="h2" class="toolbar-button">H2</button>
+      <button data-command="insertUnorderedList" class="toolbar-button">Bullet</button>
+      <button data-command="insertUnorderedList" data-checklist="true" class="toolbar-button">Checklist</button>
+      <button data-command="formatBlock" data-value="blockquote" class="toolbar-button">Quote</button>
+    </div>
+
+    <div id="note-editor-content" class="note-editor-content" contenteditable="true"></div>
+
+    <button id="save-note-button" class="primary-button full-width save-note-fixed">save note</button>
+  </div>
 </div>
 
 <script src="assets/js/app.js"></script>
 </body>
 </html>
+ 
