@@ -147,6 +147,7 @@ document.getElementById("onboarding-next-2").addEventListener("click", () => {
   userAge = ageValue;
   goToOnboardingStep(3);
 });
+
 /* Step 3 */
 document.getElementById("onboarding-finish").addEventListener("click", () => {
   const checks = document.querySelectorAll('input[name="purpose"]:checked');
@@ -154,6 +155,11 @@ document.getElementById("onboarding-finish").addEventListener("click", () => {
   if (!selected.length) return;
 
   userPurpose = selected;
+  finishOnboarding();
+});
+
+/* Skip button (mode B: save whatever is typed) */
+document.getElementById("onboarding-skip")?.addEventListener("click", () => {
   finishOnboarding();
 });
 
@@ -298,6 +304,9 @@ function renderFlashcard() {
   flashcardBack.textContent = card.back;
   flashcardProgress.textContent = `${currentCardIndex + 1} / ${deck.length}`;
 }
+/* =========================
+   FLASHCARD CONTROLS
+========================= */
 
 document.getElementById("flashcard-flip").addEventListener("click", () => {
   flashcard.classList.toggle("is-flipped");
@@ -319,6 +328,7 @@ document.getElementById("flashcard-prev").addEventListener("click", () => {
   renderFlashcard();
   haptic(15);
 });
+
 /* =========================
    FLASHCARD MODAL
 ========================= */
@@ -333,24 +343,6 @@ function closeFlashcardModal() {
   flashcardFrontInput.value = "";
   flashcardBackInput.value = "";
 }
-
-document.getElementById("add-card-button").addEventListener("click", () => {
-  flashcardModalTitle.textContent = "add card";
-  flashcardFrontInput.value = "";
-  flashcardBackInput.value = "";
-  openFlashcardModal("add");
-});
-
-document.getElementById("edit-card-button").addEventListener("click", () => {
-  const deck = decks[currentDeck];
-  if (!deck || !deck.length) return;
-
-  const card = deck[currentCardIndex];
-  flashcardModalTitle.textContent = "edit card";
-  flashcardFrontInput.value = card.front;
-  flashcardBackInput.value = card.back;
-  openFlashcardModal("edit");
-});
 
 flashcardModalCancel.addEventListener("click", closeFlashcardModal);
 
@@ -382,6 +374,24 @@ document.getElementById("delete-card-button").addEventListener("click", () => {
   currentCardIndex = 0;
   saveDecks();
   renderFlashcard();
+});
+
+/* =========================
+   ADD DECK BUTTON (FIXED)
+========================= */
+
+document.getElementById("add-deck-button").addEventListener("click", () => {
+  const name = prompt("deck name:");
+  if (!name) return;
+
+  if (decks[name]) {
+    alert("deck already exists.");
+    return;
+  }
+
+  decks[name] = [];
+  saveDecks();
+  renderDecks();
 });
 
 /* =========================
@@ -470,12 +480,12 @@ document.getElementById("quick-note-button").addEventListener("click", () => {
   openNoteEditor(null);
 });
 
+document.getElementById("close-note-editor").addEventListener("click", closeNoteEditor);
+
 function closeNoteEditor() {
   noteEditorOverlay.classList.remove("is-visible");
   appRoot.style.display = "flex";
 }
-
-document.getElementById("close-note-editor").addEventListener("click", closeNoteEditor);
 
 /* Swipe down to close */
 let noteStartY = 0;
@@ -540,6 +550,7 @@ document.querySelectorAll(".toolbar-button").forEach(btn => {
     noteEditorContent.focus();
   });
 });
+
 /* =========================
    POMODORO
 ========================= */
