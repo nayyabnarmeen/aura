@@ -1,3 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <title>aura</title>
+
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+</head>
+
+<body>
+
 <!-- ONBOARDING -->
 <div id="onboarding-screen">
   <div class="onboarding-steps">
@@ -74,6 +89,8 @@
 
   </div>
 </div>
+
+<!-- APP ROOT -->
 <div id="app-root">
 
   <main class="app-main">
@@ -106,7 +123,7 @@
       </section>
     </section>
 
-    <!-- FLASHCARDS -->
+    <!-- DECK LIST -->
     <section class="aura-screen" data-screen="flashcards">
       <header class="screen-header">
         <div>
@@ -292,26 +309,14 @@
     </section>
 
   </main>
+
+  <!-- BOTTOM NAV -->
   <nav class="bottom-nav">
-    <button class="bottom-nav-item is-active" data-screen-target="home">
-      <span>home</span>
-    </button>
-
-    <button class="bottom-nav-item" data-screen-target="flashcards">
-      <span>decks</span>
-    </button>
-
-    <button class="bottom-nav-item" data-screen-target="notes">
-      <span>notes</span>
-    </button>
-
-    <button class="bottom-nav-item" data-screen-target="timer">
-      <span>timer</span>
-    </button>
-
-    <button class="bottom-nav-item" data-screen-target="settings">
-      <span>settings</span>
-    </button>
+    <button class="bottom-nav-item is-active" data-screen-target="home"><span>home</span></button>
+    <button class="bottom-nav-item" data-screen-target="flashcards"><span>decks</span></button>
+    <button class="bottom-nav-item" data-screen-target="notes"><span>notes</span></button>
+    <button class="bottom-nav-item" data-screen-target="timer"><span>timer</span></button>
+    <button class="bottom-nav-item" data-screen-target="settings"><span>settings</span></button>
   </nav>
 
 </div>
