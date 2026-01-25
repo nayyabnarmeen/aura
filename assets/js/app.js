@@ -1,195 +1,177 @@
 /* =========================================================
-   AURA — FULLY MATCHED TO YOUR HTML
-   SECTION 1 — CORE SETUP + SAFE HELPERS + ONBOARDING
-   ========================================================= */
+   SECTION 1 — HELPERS + GLOBAL STATE + ONBOARDING
+========================================================= */
 
 /* -------------------------
-   SAFE EVENT LISTENER
-   Prevents crashes if an ID is missing
+   SAFE ELEMENT SELECTOR
 ------------------------- */
-function on(id, event, handler) {
-  const el = document.getElementById(id);
-  if (el) el.addEventListener(event, handler);
+function $(id) {
+  return document.getElementById(id);
 }
 
 /* -------------------------
-   STATE
+   GLOBAL STATE
 ------------------------- */
 let userName = "";
 let userAge = "";
-let userPurpose = [];
+let userPurposes = [];
 
+let todos = JSON.parse(localStorage.getItem("aura-todos") || "[]");
 let decks = JSON.parse(localStorage.getItem("aura-decks") || "{}");
 let notes = JSON.parse(localStorage.getItem("aura-notes") || "[]");
-let todos = JSON.parse(localStorage.getItem("aura-todos") || "[]");
+
+let pomodoroStats = JSON.parse(
+  localStorage.getItem("aura-pomodoro-stats") ||
+  '{"sessions":0,"seconds":0}'
+);
 
 let currentDeck = null;
 let currentCardIndex = 0;
 
+let noteSearchQuery = "";
 let timerInterval = null;
 let totalSeconds = 1500;
-let remainingSeconds = totalSeconds;
-
-let pomodoroStats = JSON.parse(
-  localStorage.getItem("aura-pomodoro-stats") || '{"sessions":0,"seconds":0}'
-);
-
-let noteSearchQuery = "";
+let remainingSeconds = 1500;
 
 /* -------------------------
-   ELEMENTS
+   ELEMENT REFERENCES
 ------------------------- */
-const onboardingScreen = document.getElementById("onboarding-screen");
-const onboardingStepsContainer = document.querySelector(".onboarding-steps");
-const appRoot = document.getElementById("app-root");
-const screens = document.querySelectorAll(".aura-screen");
-const navButtons = document.querySelectorAll(".bottom-nav-item");
+const appRoot = $("app-root");
 
-/* Flashcards */
-const deckGrid = document.getElementById("deck-grid");
-const flashcard = document.getElementById("flashcard");
-const flashcardFront = document.getElementById("flashcard-front");
-const flashcardBack = document.getElementById("flashcard-back");
-const flashcardProgress = document.getElementById("flashcard-progress");
-const flashcardModal = document.getElementById("flashcard-modal");
-const flashcardFrontInput = document.getElementById("flashcard-front-input");
-const flashcardBackInput = document.getElementById("flashcard-back-input");
+const notesList = $("notes-list");
+const notesSearchInput = $("notes-search-input");
 
-/* Notes */
-const notesList = document.getElementById("notes-list");
-const notesSearchInput = document.getElementById("notes-search-input");
-const noteEditorOverlay = document.getElementById("note-editor-overlay");
-const noteEditorContent = document.getElementById("note-editor-content");
-const noteEditorTitle = document.getElementById("note-editor-title-input");
-const noteTagsInput = document.getElementById("note-tags-input");
-const pinNoteButton = document.getElementById("pin-note-button");
+const noteEditorOverlay = $("note-editor-overlay");
+const noteEditorTitle = $("note-editor-title-input");
+const noteEditorContent = $("note-editor-content");
+const noteTagsInput = $("note-tags-input");
+const pinNoteButton = $("pin-note-button");
 
-/* Timer */
-const timerDisplay = document.getElementById("pomodoro-time");
-const hourInput = document.getElementById("timer-hours");
-const minuteInput = document.getElementById("timer-minutes");
-const pomodoroStatsSessions = document.getElementById("pomodoro-stats-sessions");
-const pomodoroStatsTime = document.getElementById("pomodoro-stats-time");
+const flashcard = $("flashcard");
+const flashcardFront = $("flashcard-front");
+const flashcardBack = $("flashcard-back");
+const flashcardProgress = $("flashcard-progress");
+
+const flashcardFrontInput = $("flashcard-front-input");
+const flashcardBackInput = $("flashcard-back-input");
+const flashcardModal = $("flashcard-modal");
+
+const timerDisplay = $("pomodoro-time");
+const hourInput = $("timer-hours");
+const minuteInput = $("timer-minutes");
 
 /* -------------------------
-   HAPTICS
+   EVENT LISTENER HELPER
 ------------------------- */
-function haptic(ms = 20) {
-  if (navigator.vibrate) navigator.vibrate(ms);
+function on(id, event, handler) {
+  const el = $(id);
+  if (el) el.addEventListener(event, handler);
 }
 
 /* -------------------------
-   ONBOARDING
+   SCREEN SWITCHING
 ------------------------- */
-let onboardingStep = 1;
+function showScreen(name) {
+  document.querySelectorAll(".aura-screen").forEach(screen => {
+    screen.classList.remove("is-active");
+    if (screen.dataset.screen === name) {
+      screen.classList.add("is-active");
+    }
+  });
 
-function goToOnboardingStep(step) {
-  onboardingStep = step;
-  onboardingStepsContainer.style.transform =
-    `translateX(${(step - 1) * -100}vw)`;
+  document.querySelectorAll(".bottom-nav-item").forEach(btn => {
+    btn.classList.toggle("is-active", btn.dataset.screenTarget === name);
+  });
 }
 
-function finishOnboarding() {
+/* -------------------------
+   ONBOARDING LOGIC
+------------------------- */
+const onboardingScreen = $("onboarding-screen");
+
+on("onboarding-next-1", "click", () => {
+  const name = $("onboarding-name-input").value.trim();
+  if (!name) return;
+
+  userName = name;
+  document.querySelector('[data-step="1"]').style.display = "none";
+  document.querySelector('[data-step="2"]').style.display = "block";
+});
+
+on("onboarding-next-2", "click", () => {
+  const age = $("onboarding-age-input").value.trim();
+  if (!age) return;
+
+  userAge = age;
+  document.querySelector('[data-step="2"]').style.display = "none";
+  document.querySelector('[data-step="3"]').style.display = "block";
+});
+
+on("onboarding-finish", "click", () => {
+  const selected = [...document.querySelectorAll('input[name="purpose"]:checked')]
+    .map(cb => cb.value);
+
+  userPurposes = selected;
+
   onboardingScreen.style.display = "none";
   appRoot.style.display = "flex";
 
-  const greet = document.getElementById("home-greeting");
-  if (greet && userName) greet.textContent = `hello, ${userName}`;
-
-  renderTodos();
-  renderDecks();
-  renderNotes();
-  renderPomodoroStats();
-}
-
-/* Step 1 → Step 2 */
-on("onboarding-next-1", "click", () => {
-  const name = document.getElementById("onboarding-name-input").value.trim();
-  if (!name) return;
-  userName = name;
-  goToOnboardingStep(2);
-});
-
-/* Step 2 → Step 3 */
-on("onboarding-next-2", "click", () => {
-  const age = document.getElementById("onboarding-age-input").value.trim();
-  if (!age) return;
-  userAge = age;
-  goToOnboardingStep(3);
-});
-
-/* Finish onboarding */
-on("onboarding-finish", "click", () => {
-  const checks = document.querySelectorAll('input[name="purpose"]:checked');
-  userPurpose = Array.from(checks).map(c => c.value);
-  if (!userPurpose.length) return;
-  finishOnboarding();
+  $("home-greeting").textContent = `hello, ${userName}`;
 });
 /* =========================================================
    SECTION 2 — NAVIGATION + TODOS
-   ========================================================= */
+========================================================= */
 
 /* -------------------------
-   NAVIGATION BETWEEN SCREENS
+   BOTTOM NAVIGATION
 ------------------------- */
-
-/**
- * Shows a screen by its data-screen="name"
- */
-function showScreen(name) {
-  screens.forEach(s => s.classList.remove("is-active"));
-  const target = document.querySelector(`[data-screen="${name}"]`);
-  if (target) target.classList.add("is-active");
-}
-
-/* Bottom navigation buttons */
-navButtons.forEach(btn => {
+document.querySelectorAll(".bottom-nav-item").forEach(btn => {
   btn.addEventListener("click", () => {
-    navButtons.forEach(b => b.classList.remove("is-active"));
-    btn.classList.add("is-active");
-    showScreen(btn.dataset.screenTarget.trim());
+    const target = btn.dataset.screenTarget;
+    if (target) showScreen(target);
   });
 });
 
 /* -------------------------
-   TODO LIST
+   SAVE TODOS
 ------------------------- */
-
 function saveTodos() {
   localStorage.setItem("aura-todos", JSON.stringify(todos));
 }
 
-/**
- * Renders the todo list on the home screen
- */
+/* -------------------------
+   RENDER TODOS
+------------------------- */
 function renderTodos() {
-  const list = document.getElementById("todo-list");
-  if (!list) return;
-
+  const list = $("todo-list");
   list.innerHTML = "";
 
-  todos.forEach((item, index) => {
+  todos.forEach((todo, index) => {
     const li = document.createElement("li");
     li.className = "todo-item";
 
     li.innerHTML = `
-      <span>${item}</span>
-      <button class="ghost-button small">x</button>
+      <span>${todo}</span>
+      <button class="todo-delete" data-index="${index}">×</button>
     `;
-
-    /* Delete todo */
-    li.querySelector("button").addEventListener("click", () => {
-      todos.splice(index, 1);
-      saveTodos();
-      renderTodos();
-      haptic(30);
-    });
 
     list.appendChild(li);
   });
+
+  // delete handlers
+  document.querySelectorAll(".todo-delete").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const index = btn.dataset.index;
+      todos.splice(index, 1);
+      saveTodos();
+      renderTodos();
+    });
+  });
 }
 
-/* Add new todo */
+/* -------------------------
+   ADD TODO
+------------------------- */
 on("todo-add-button", "click", () => {
   const text = prompt("new task:");
   if (!text) return;
@@ -199,47 +181,43 @@ on("todo-add-button", "click", () => {
   renderTodos();
 });
 /* =========================================================
-   SECTION 3 — DECKS + FLASHCARDS + MODAL LOGIC
-   ========================================================= */
+   SECTION 3 — DECKS + FLASHCARDS + MODAL
+========================================================= */
 
 /* -------------------------
-   SAVE / RENDER DECKS
+   SAVE DECKS
 ------------------------- */
-
 function saveDecks() {
   localStorage.setItem("aura-decks", JSON.stringify(decks));
 }
 
-/**
- * Renders the list of decks on the "decks" screen
- */
+/* -------------------------
+   RENDER DECK LIST
+------------------------- */
 function renderDecks() {
-  deckGrid.innerHTML = "";
+  const grid = $("deck-grid");
+  grid.innerHTML = "";
 
   const names = Object.keys(decks);
 
   if (!names.length) {
-    deckGrid.innerHTML = `
-      <p style="font-size:13px;color:#666;">
-        no decks yet. create one to get started.
-      </p>`;
+    grid.innerHTML = `<p class="hint-text">no decks yet. create one to begin.</p>`;
     return;
   }
 
-  names.forEach(deckName => {
+  names.forEach(name => {
     const card = document.createElement("div");
-    card.className = "deck-card";
-    card.textContent = deckName;
+    card.className = "glass-card deck-card";
+    card.textContent = name;
 
-    card.addEventListener("click", () => openDeck(deckName));
-    deckGrid.appendChild(card);
+    card.addEventListener("click", () => openDeck(name));
+    grid.appendChild(card);
   });
 }
 
 /* -------------------------
    ADD NEW DECK
 ------------------------- */
-
 on("add-deck-button", "click", () => {
   const name = prompt("deck name:");
   if (!name) return;
@@ -260,12 +238,11 @@ on("add-deck-button", "click", () => {
 /* -------------------------
    OPEN DECK VIEWER
 ------------------------- */
-
 function openDeck(name) {
   currentDeck = name;
   currentCardIndex = 0;
 
-  document.getElementById("deck-viewer-title").textContent = name;
+  $("deck-viewer-title").textContent = name;
 
   flashcard.classList.remove("is-flipped");
   renderFlashcard();
@@ -279,9 +256,8 @@ on("back-to-decks", "click", () => {
 });
 
 /* -------------------------
-   FLASHCARD RENDERING
+   RENDER FLASHCARD
 ------------------------- */
-
 function renderFlashcard() {
   const deck = decks[currentDeck];
 
@@ -296,8 +272,7 @@ function renderFlashcard() {
 
   flashcardFront.textContent = card.front;
   flashcardBack.textContent = card.back;
-  flashcardProgress.textContent =
-    `${currentCardIndex + 1} / ${deck.length}`;
+  flashcardProgress.textContent = `${currentCardIndex + 1} / ${deck.length}`;
 }
 
 /* Flip card */
@@ -320,19 +295,16 @@ on("flashcard-prev", "click", () => {
   const deck = decks[currentDeck];
   if (!deck.length) return;
 
-  currentCardIndex =
-    (currentCardIndex - 1 + deck.length) % deck.length;
-
+  currentCardIndex = (currentCardIndex - 1 + deck.length) % deck.length;
   flashcard.classList.remove("is-flipped");
   renderFlashcard();
 });
 
 /* -------------------------
-   ADD CARD (EMPTY MODAL)
+   ADD CARD (OPEN MODAL)
 ------------------------- */
-
 on("add-card-button", "click", () => {
-  document.getElementById("flashcard-modal-title").textContent = "add card";
+  $("flashcard-modal-title").textContent = "add card";
 
   flashcardFrontInput.value = "";
   flashcardBackInput.value = "";
@@ -342,14 +314,13 @@ on("add-card-button", "click", () => {
 });
 
 /* -------------------------
-   EDIT CARD (EMPTY MODAL, OVERWRITE)
+   EDIT CARD (OPEN MODAL)
 ------------------------- */
-
 on("edit-card-button", "click", () => {
   const deck = decks[currentDeck];
   if (!deck.length) return;
 
-  document.getElementById("flashcard-modal-title").textContent = "edit card";
+  $("flashcard-modal-title").textContent = "edit card";
 
   flashcardFrontInput.value = "";
   flashcardBackInput.value = "";
@@ -361,7 +332,6 @@ on("edit-card-button", "click", () => {
 /* -------------------------
    SAVE CARD (ADD OR EDIT)
 ------------------------- */
-
 on("flashcard-modal-save", "click", () => {
   const front = flashcardFrontInput.value.trim();
   const back = flashcardBackInput.value.trim();
@@ -393,7 +363,6 @@ on("flashcard-modal-cancel", "click", () => {
 /* -------------------------
    DELETE CARD
 ------------------------- */
-
 on("delete-card-button", "click", () => {
   const deck = decks[currentDeck];
   if (!deck.length) return;
@@ -406,9 +375,8 @@ on("delete-card-button", "click", () => {
 });
 
 /* -------------------------
-   RENAME DECK (CHANGES KEY)
+   RENAME DECK
 ------------------------- */
-
 on("rename-deck-button", "click", () => {
   const newName = prompt("new deck name:");
   if (!newName) return;
@@ -429,13 +397,12 @@ on("rename-deck-button", "click", () => {
   saveDecks();
   renderDecks();
 
-  document.getElementById("deck-viewer-title").textContent = trimmed;
+  $("deck-viewer-title").textContent = trimmed;
 });
 
 /* -------------------------
-   DELETE DECK (CONFIRMATION)
+   DELETE DECK
 ------------------------- */
-
 on("delete-deck-button", "click", () => {
   if (!confirm("delete this deck?")) return;
 
@@ -446,8 +413,8 @@ on("delete-deck-button", "click", () => {
   showScreen("flashcards");
 });
 /* =========================================================
-   SECTION 4 — NOTES + EDITOR + SEARCH + PINNING
-   ========================================================= */
+   SECTION 4 — NOTES + EDITOR
+========================================================= */
 
 /* -------------------------
    SAVE NOTES
@@ -457,7 +424,7 @@ function saveNotes() {
 }
 
 /* -------------------------
-   RENDER NOTES LIST
+   RENDER NOTES
 ------------------------- */
 function renderNotes() {
   notesList.innerHTML = "";
@@ -480,15 +447,12 @@ function renderNotes() {
 
   filtered.forEach(n => {
     const card = document.createElement("div");
-    card.className = "glass-card";
+    card.className = "glass-card note-card";
 
     const preview = n.content.replace(/<[^>]*>/g, "").slice(0, 80);
 
     card.innerHTML = `
-      <div class="note-card-header">
-        <h3>${n.title || "untitled"}</h3>
-        ${n.pinned ? '<span class="note-pin">pinned</span>' : ""}
-      </div>
+      <h3>${n.title || "untitled"}</h3>
       <p>${preview}${preview.length === 80 ? "..." : ""}</p>
       ${n.tags ? `<p class="hint-text">${n.tags}</p>` : ""}
     `;
@@ -499,14 +463,6 @@ function renderNotes() {
 }
 
 /* -------------------------
-   SEARCH NOTES
-------------------------- */
-notesSearchInput.addEventListener("input", e => {
-  noteSearchQuery = e.target.value;
-  renderNotes();
-});
-
-/* -------------------------
    OPEN NOTE EDITOR
 ------------------------- */
 function openNoteEditor(index = null) {
@@ -514,29 +470,30 @@ function openNoteEditor(index = null) {
   appRoot.style.display = "none";
 
   if (index === null) {
+    // new note
+    noteEditorOverlay.dataset.editing = "new";
     noteEditorTitle.value = "";
     noteEditorContent.innerHTML = "";
     noteTagsInput.value = "";
-    noteEditorOverlay.dataset.editing = "new";
     pinNoteButton.dataset.pinned = "false";
     pinNoteButton.textContent = "pin";
   } else {
+    // editing existing note
     const note = notes[index];
+    noteEditorOverlay.dataset.editing = index;
+
     noteEditorTitle.value = note.title;
     noteEditorContent.innerHTML = note.content;
     noteTagsInput.value = note.tags;
-    noteEditorOverlay.dataset.editing = index;
+
     pinNoteButton.dataset.pinned = note.pinned ? "true" : "false";
     pinNoteButton.textContent = note.pinned ? "unpin" : "pin";
   }
 }
 
-/* Add new note */
-on("add-note-button", "click", () => {
-  openNoteEditor(null);
-});
-
-/* Close editor */
+/* -------------------------
+   CLOSE NOTE EDITOR
+------------------------- */
 on("close-note-editor", "click", () => {
   noteEditorOverlay.classList.remove("is-visible");
   appRoot.style.display = "flex";
@@ -551,15 +508,31 @@ on("save-note-button", "click", () => {
   const tags = noteTagsInput.value.trim();
   const pinned = pinNoteButton.dataset.pinned === "true";
 
-  if (!title && !content) return;
+  if (!content && !title) {
+    alert("note is empty.");
+    return;
+  }
 
-  const now = Date.now();
   const editing = noteEditorOverlay.dataset.editing;
 
   if (editing === "new") {
-    notes.push({ title, content, tags, pinned, updatedAt: now });
+    notes.push({
+      title,
+      content,
+      tags,
+      pinned,
+      updatedAt: Date.now()
+    });
   } else {
-    notes[editing] = { title, content, tags, pinned, updatedAt: now };
+    const index = Number(editing);
+    notes[index] = {
+      ...notes[index],
+      title,
+      content,
+      tags,
+      pinned,
+      updatedAt: Date.now()
+    };
   }
 
   saveNotes();
@@ -574,7 +547,14 @@ on("save-note-button", "click", () => {
 ------------------------- */
 on("delete-note-button", "click", () => {
   const editing = noteEditorOverlay.dataset.editing;
-  if (editing !== "new") notes.splice(editing, 1);
+  if (editing === "new") {
+    noteEditorOverlay.classList.remove("is-visible");
+    appRoot.style.display = "flex";
+    return;
+  }
+
+  const index = Number(editing);
+  notes.splice(index, 1);
 
   saveNotes();
   renderNotes();
@@ -584,23 +564,31 @@ on("delete-note-button", "click", () => {
 });
 
 /* -------------------------
-   PIN / UNPIN NOTE
+   PIN NOTE
 ------------------------- */
-pinNoteButton.addEventListener("click", () => {
-  const next = pinNoteButton.dataset.pinned !== "true";
-  pinNoteButton.dataset.pinned = next ? "true" : "false";
-  pinNoteButton.textContent = next ? "unpin" : "pin";
+on("pin-note-button", "click", () => {
+  const pinned = pinNoteButton.dataset.pinned === "true";
+  pinNoteButton.dataset.pinned = pinned ? "false" : "true";
+  pinNoteButton.textContent = pinned ? "pin" : "unpin";
 });
 
 /* -------------------------
-   NOTE TOOLBAR (BOLD, ITALIC, H1, ETC.)
+   SEARCH NOTES
+------------------------- */
+notesSearchInput.addEventListener("input", () => {
+  noteSearchQuery = notesSearchInput.value.trim();
+  renderNotes();
+});
+
+/* -------------------------
+   TOOLBAR FORMATTING
 ------------------------- */
 document.querySelectorAll(".toolbar-button").forEach(btn => {
   btn.addEventListener("click", () => {
     const command = btn.dataset.command;
     const value = btn.dataset.value || null;
 
-    if (btn.dataset.checklist === "true") {
+    if (btn.dataset.checklist) {
       document.execCommand("insertUnorderedList");
       return;
     }
@@ -609,136 +597,126 @@ document.querySelectorAll(".toolbar-button").forEach(btn => {
   });
 });
 /* =========================================================
-   SECTION 5 — TIMER + STATS
-   ========================================================= */
+   SECTION 5 — TIMER + RING + STATS
+========================================================= */
 
 /* -------------------------
-   GET CUSTOM TIME
-------------------------- */
-/**
- * Reads hours + minutes inputs and converts to seconds.
- * If user enters 0, defaults to 25 minutes (1500 seconds).
- */
-function getCustomTime() {
-  const h = parseInt(hourInput.value || "0", 10);
-  const m = parseInt(minuteInput.value || "0", 10);
-
-  const seconds = h * 3600 + m * 60;
-  return seconds > 0 ? seconds : 1500;
-}
-
-/* -------------------------
-   UPDATE TIMER DISPLAY
-------------------------- */
-function updateTimerDisplay() {
-  const m = Math.floor(remainingSeconds / 60);
-  const s = remainingSeconds % 60;
-
-  timerDisplay.textContent =
-    `${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
-}
-
-/* -------------------------
-   TIMER RING ANIMATION
-------------------------- */
-const ring = document.querySelector(".timer-ring-progress");
-const radius = 70;
-const circumference = 2 * Math.PI * radius;
-
-if (ring) {
-  ring.style.strokeDasharray = circumference;
-  ring.style.strokeDashoffset = 0;
-}
-
-function updateRing() {
-  if (!ring) return;
-  ring.style.strokeDashoffset =
-    circumference * (1 - remainingSeconds / totalSeconds);
-}
-
-/* -------------------------
-   SAVE + RENDER STATS
+   SAVE POMODORO STATS
 ------------------------- */
 function savePomodoroStats() {
   localStorage.setItem("aura-pomodoro-stats", JSON.stringify(pomodoroStats));
 }
 
+/* -------------------------
+   UPDATE STATS DISPLAY
+------------------------- */
 function renderPomodoroStats() {
-  pomodoroStatsSessions.textContent = `sessions: ${pomodoroStats.sessions}`;
-  const minutes = Math.round(pomodoroStats.seconds / 60);
-  pomodoroStatsTime.textContent = `focused time: ${minutes} min`;
+  $("pomodoro-stats-sessions").textContent = `sessions: ${pomodoroStats.sessions}`;
+  $("pomodoro-stats-time").textContent = `focused time: ${Math.floor(pomodoroStats.seconds / 60)} min`;
+}
+
+/* -------------------------
+   TIMER RING SETUP
+------------------------- */
+const ring = document.querySelector(".timer-ring-progress");
+const radius = 90;
+const circumference = 2 * Math.PI * radius;
+
+ring.style.strokeDasharray = circumference;
+ring.style.strokeDashoffset = 0;
+
+/* -------------------------
+   UPDATE RING PROGRESS
+------------------------- */
+function updateRing() {
+  const progress = remainingSeconds / totalSeconds;
+  const offset = circumference * (1 - progress);
+  ring.style.strokeDashoffset = offset;
+}
+
+/* -------------------------
+   FORMAT TIME
+------------------------- */
+function formatTime(sec) {
+  const m = Math.floor(sec / 60);
+  const s = sec % 60;
+  return `${m}:${s.toString().padStart(2, "0")}`;
 }
 
 /* -------------------------
    START / PAUSE TIMER
 ------------------------- */
 on("pomodoro-toggle", "click", () => {
-  const btn = document.getElementById("pomodoro-toggle");
-
-  /* Pause timer */
   if (timerInterval) {
+    // pause
     clearInterval(timerInterval);
     timerInterval = null;
-    btn.textContent = "start";
+    $("pomodoro-toggle").textContent = "start";
     return;
   }
 
-  /* Start timer */
-  totalSeconds = getCustomTime();
-  remainingSeconds = totalSeconds;
+  // if starting fresh, read inputs
+  if (remainingSeconds === totalSeconds) {
+    const hours = Number(hourInput.value) || 0;
+    const minutes = Number(minuteInput.value) || 0;
 
-  updateTimerDisplay();
-  updateRing();
+    totalSeconds = hours * 3600 + minutes * 60;
+    remainingSeconds = totalSeconds;
+
+    if (totalSeconds <= 0) {
+      alert("set a valid time.");
+      return;
+    }
+
+    timerDisplay.textContent = formatTime(remainingSeconds);
+    updateRing();
+  }
+
+  $("pomodoro-toggle").textContent = "pause";
 
   timerInterval = setInterval(() => {
     remainingSeconds--;
 
-    /* Timer finished */
-    if (remainingSeconds <= 0) {
-      remainingSeconds = 0;
-      updateTimerDisplay();
-      updateRing();
+    timerDisplay.textContent = formatTime(remainingSeconds);
+    updateRing();
 
+    if (remainingSeconds <= 0) {
       clearInterval(timerInterval);
       timerInterval = null;
-      btn.textContent = "start";
 
-      /* Update stats */
-      pomodoroStats.sessions += 1;
+      pomodoroStats.sessions++;
       pomodoroStats.seconds += totalSeconds;
       savePomodoroStats();
       renderPomodoroStats();
 
-      return;
+      $("pomodoro-toggle").textContent = "start";
+      remainingSeconds = totalSeconds;
+      updateRing();
     }
-
-    updateTimerDisplay();
-    updateRing();
   }, 1000);
-
-  btn.textContent = "pause";
 });
 
 /* -------------------------
    RESET TIMER
 ------------------------- */
 on("pomodoro-reset", "click", () => {
-  if (timerInterval) {
-    clearInterval(timerInterval);
-    timerInterval = null;
-  }
+  clearInterval(timerInterval);
+  timerInterval = null;
 
-  totalSeconds = getCustomTime();
+  const hours = Number(hourInput.value) || 0;
+  const minutes = Number(minuteInput.value) || 0;
+
+  totalSeconds = hours * 3600 + minutes * 60;
   remainingSeconds = totalSeconds;
 
-  updateTimerDisplay();
+  timerDisplay.textContent = formatTime(remainingSeconds);
   updateRing();
 
-  document.getElementById("pomodoro-toggle").textContent = "start";
+  $("pomodoro-toggle").textContent = "start";
 });
 /* =========================================================
-   SECTION 6 — SETTINGS (CHANGE NAME + THEME TOGGLE)
-   ========================================================= */
+   SECTION 6 — SETTINGS
+========================================================= */
 
 /* -------------------------
    CHANGE NAME
@@ -748,65 +726,67 @@ on("settings-change-name", "click", () => {
   if (!newName) return;
 
   userName = newName.trim();
-  const greet = document.getElementById("home-greeting");
-  if (greet) greet.textContent = `hello, ${userName}`;
+  $("home-greeting").textContent = `hello, ${userName}`;
 });
 
 /* -------------------------
-   THEME TOGGLE (LIGHT / DARK)
+   THEME TOGGLE
 ------------------------- */
 on("settings-theme-toggle", "click", () => {
-  const html = document.documentElement;
+  const root = document.documentElement;
+  const current = root.getAttribute("data-theme");
 
-  if (html.dataset.theme === "dark") {
-    html.dataset.theme = "light";
-    localStorage.setItem("aura-theme", "light");
-  } else {
-    html.dataset.theme = "dark";
-    localStorage.setItem("aura-theme", "dark");
-  }
+  const next = current === "light" ? "dark" : "light";
+  root.setAttribute("data-theme", next);
+
+  localStorage.setItem("aura-theme", next);
 });
 
 /* -------------------------
-   LOAD SAVED THEME
+   APPLY SAVED THEME ON LOAD
 ------------------------- */
-(function loadTheme() {
+(function applySavedTheme() {
   const saved = localStorage.getItem("aura-theme");
-  if (saved) document.documentElement.dataset.theme = saved;
+  if (saved) {
+    document.documentElement.setAttribute("data-theme", saved);
+  }
 })();
 /* =========================================================
-   SECTION 7 — INITIALIZATION + FIRST RENDER
-   ========================================================= */
+   SECTION 7 — INIT + FIRST RENDER
+========================================================= */
 
 /* -------------------------
-   INITIAL LOAD
+   INITIAL RENDER
 ------------------------- */
-
-/**
- * Loads everything when the app starts.
- * If onboarding hasn't been completed, show onboarding.
- */
-function initApp() {
-  // If onboarding screen exists, show it first
-  if (onboardingScreen) {
-    onboardingScreen.style.display = "flex";
-    appRoot.style.display = "none";
-  }
-
-  // Load theme
-  const savedTheme = localStorage.getItem("aura-theme");
-  if (savedTheme) {
-    document.documentElement.dataset.theme = savedTheme;
-  }
-
-  // Render all UI components
+function init() {
+  // Render everything that exists in storage
   renderTodos();
   renderDecks();
   renderNotes();
   renderPomodoroStats();
-  updateTimerDisplay();
+
+  // If onboarding was completed earlier, skip it
+  if (userName) {
+    onboardingScreen.style.display = "none";
+    appRoot.style.display = "flex";
+    $("home-greeting").textContent = `hello, ${userName}`;
+  } else {
+    // Show onboarding by default
+    onboardingScreen.style.display = "block";
+    appRoot.style.display = "none";
+
+    // Ensure only step 1 is visible
+    document.querySelector('[data-step="1"]').style.display = "block";
+    document.querySelector('[data-step="2"]').style.display = "none";
+    document.querySelector('[data-step="3"]').style.display = "none";
+  }
+
+  // Timer initial display
+  timerDisplay.textContent = formatTime(remainingSeconds);
   updateRing();
 }
 
-/* Run app */
-initApp();
+/* -------------------------
+   START APP
+------------------------- */
+init();
