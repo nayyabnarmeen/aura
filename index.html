@@ -244,68 +244,36 @@
       </div>
 
       <!-- Timer -->
-      <section class="aura-screen" data-screen="timer">
-        <header class="screen-header">
-          <div>
-            <p class="screen-eyebrow">deep work</p>
-            <h1 class="screen-title">pomodoro</h1>
-          </div>
-        </header>
+      <div class="pomodoro-container">
 
-        <section class="glass-card timer-card">
+  <div class="timer-ring">
+    <svg class="timer-ring-svg" width="150" height="150">
+      <circle class="timer-ring-bg" cx="75" cy="75" r="70"></circle>
+      <circle class="timer-ring-progress" cx="75" cy="75" r="70"></circle>
+    </svg>
 
-          <div class="timer-ring-wrapper">
-            <svg class="timer-ring" width="170" height="170">
-              <circle class="timer-ring-bg" cx="85" cy="85" r="70" />
-              <circle class="timer-ring-progress" cx="85" cy="85" r="70" />
-            </svg>
+    <!-- TIMER TEXT INSIDE THE RING -->
+    <div id="pomodoro-time">25:00</div>
+  </div>
 
-            <div class="timer-center">
-              <p id="pomodoro-time" class="timer-display">25:00</p>
-            </div>
-          </div>
+  <div class="timer-inputs">
+    <div class="timer-input-group">
+      <label>hours</label>
+      <input id="timer-hours" type="number" min="0" value="0">
+    </div>
+    <div class="timer-input-group">
+      <label>minutes</label>
+      <input id="timer-minutes" type="number" min="0" value="25">
+    </div>
+  </div>
 
-          <div class="timer-inputs">
-            <div class="timer-input-group">
-              <label>hours</label>
-              <input id="timer-hours" type="number" min="0" max="12" value="0" />
-            </div>
+  <div class="pomodoro-buttons">
+    <button id="pomodoro-toggle">start</button>
+    <button id="pomodoro-reset">reset</button>
+  </div>
 
-            <div class="timer-input-group">
-              <label>minutes</label>
-              <input id="timer-minutes" type="number" min="0" max="180" value="25" />
-            </div>
-          </div>
+</div>
 
-          <div class="timer-buttons">
-            <button id="pomodoro-toggle" class="primary-button full-width">start</button>
-            <button id="pomodoro-reset" class="ghost-button full-width">reset</button>
-          </div>
-
-        </section>
-      </section>
-
-      <!-- Settings -->
-      <section class="aura-screen" data-screen="settings">
-        <header class="screen-header">
-          <div>
-            <p class="screen-eyebrow">tune aura</p>
-            <h1 class="screen-title">settings</h1>
-          </div>
-        </header>
-
-        <section class="glass-card">
-          <h2 class="card-title">profile</h2>
-          <button id="settings-change-name" class="ghost-button full-width">change name</button>
-        </section>
-
-        <section class="glass-card">
-          <h2 class="card-title">appearance</h2>
-          <button id="settings-theme-toggle" class="ghost-button full-width">toggle light / dark</button>
-        </section>
-      </section>
-
-    </main>
 
     <!-- Bottom navigation -->
     <nav class="bottom-nav">
