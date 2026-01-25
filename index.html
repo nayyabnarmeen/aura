@@ -2,222 +2,19 @@
 <html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Aura</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <title>aura</title>
 
-  <style>
-    /* BASIC RESET */
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+  <!-- Styles -->
+  <link rel="stylesheet" href="assets/css/style.css" />
 
-    body {
-      font-family: system-ui, sans-serif;
-      background: var(--bg, #fafafa);
-      color: var(--text, #222);
-      height: 100vh;
-      overflow: hidden;
-    }
-
-    :root[data-theme="light"] {
-      --bg: #fafafa;
-      --text: #222;
-      --card: #fff;
-      --accent: #6c5ce7;
-    }
-
-    :root[data-theme="dark"] {
-      --bg: #111;
-      --text: #eee;
-      --card: #1c1c1c;
-      --accent: #a29bfe;
-    }
-
-    /* LAYOUT */
-    #app-root {
-      display: none;
-      flex-direction: column;
-      height: 100vh;
-    }
-
-    .aura-screen {
-      display: none;
-      padding: 20px;
-      overflow-y: auto;
-      height: calc(100vh - 70px);
-    }
-
-    .aura-screen.is-active {
-      display: block;
-    }
-
-    /* NAVIGATION */
-    .bottom-nav {
-      height: 70px;
-      display: flex;
-      background: var(--card);
-      border-top: 1px solid #ccc;
-    }
-
-    .bottom-nav-item {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      font-size: 14px;
-    }
-
-    .bottom-nav-item.is-active {
-      color: var(--accent);
-      font-weight: 600;
-    }
-
-    /* CARDS */
-    .glass-card {
-      background: var(--card);
-      padding: 15px;
-      border-radius: 12px;
-      margin-bottom: 12px;
-      cursor: pointer;
-    }
-
-    /* BUTTONS */
-    .primary-button {
-      background: var(--accent);
-      color: white;
-      padding: 10px 16px;
-      border-radius: 8px;
-      border: none;
-      cursor: pointer;
-      margin: 10px 0;
-    }
-
-    .ghost-button {
-      background: transparent;
-      border: 1px solid #aaa;
-      padding: 6px 10px;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-
-    /* FLASHCARDS */
-    #flashcard {
-      width: 100%;
-      height: 180px;
-      background: var(--card);
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 20px;
-      transition: transform 0.4s;
-      position: relative;
-    }
-
-    #flashcard.is-flipped {
-      transform: rotateY(180deg);
-    }
-
-    #flashcard-front,
-    #flashcard-back {
-      position: absolute;
-      backface-visibility: hidden;
-      padding: 20px;
-      text-align: center;
-    }
-
-    #flashcard-back {
-      transform: rotateY(180deg);
-    }
-
-    /* MODAL */
-    #flashcard-modal {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.6);
-      display: none;
-      align-items: center;
-      justify-content: center;
-    }
-
-    #flashcard-modal.is-visible {
-      display: flex;
-    }
-
-    .modal-box {
-      background: var(--card);
-      padding: 20px;
-      border-radius: 12px;
-      width: 90%;
-      max-width: 400px;
-    }
-
-    textarea {
-      width: 100%;
-      height: 80px;
-      margin-bottom: 10px;
-      padding: 10px;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-    }
-
-    /* NOTES EDITOR */
-    #note-editor-overlay {
-      position: fixed;
-      inset: 0;
-      background: var(--bg);
-      display: none;
-      flex-direction: column;
-      padding: 20px;
-    }
-
-    #note-editor-overlay.is-visible {
-      display: flex;
-    }
-
-    #note-editor-content {
-      flex: 1;
-      background: var(--card);
-      padding: 15px;
-      border-radius: 12px;
-      margin-top: 10px;
-      overflow-y: auto;
-    }
-
-    /* TIMER */
-    .timer-wrapper {
-      position: relative;
-      width: 220px;
-      height: 220px;
-      margin: 20px auto;
-    }
-
-    .timer-ring {
-      transform: rotate(-90deg);
-    }
-
-    .timer-ring-bg {
-      fill: none;
-      stroke: #ddd;
-      stroke-width: 12;
-    }
-
-    .timer-ring-progress {
-      fill: none;
-      stroke: var(--accent);
-      stroke-width: 12;
-      stroke-linecap: round;
-      transition: stroke-dashoffset 0.3s linear;
-    }
-
-    .timer-center {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      font-size: 32px;
-      font-weight: 600;
-    }
-  </style>
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
 </head>
 
 <body>
@@ -229,141 +26,344 @@
   <div class="onboarding-steps">
 
     <!-- STEP 1 -->
-    <div class="onboarding-step">
-      <h2>what's your name?</h2>
-      <input id="onboarding-name-input" />
-      <button id="onboarding-next-1" class="primary-button">next</button>
-    </div>
+    <section class="onboarding-card" data-step="1">
+      <header class="onboarding-header">
+        <span class="onboarding-back-placeholder"></span>
+      </header>
+
+      <div class="onboarding-body">
+        <h1 class="onboarding-title">hey, i'm aura</h1>
+        <p class="onboarding-subtitle">let's set things up so i can support you properly.</p>
+
+        <label class="onboarding-label">what should i call you?</label>
+        <input id="onboarding-name-input" class="onboarding-input" type="text" placeholder="your name" />
+
+        <button id="onboarding-next-1" class="primary-button full-width">next</button>
+      </div>
+    </section>
 
     <!-- STEP 2 -->
-    <div class="onboarding-step">
-      <h2>how old are you?</h2>
-      <input id="onboarding-age-input" />
-      <button id="onboarding-next-2" class="primary-button">next</button>
-    </div>
+    <section class="onboarding-card" data-step="2">
+      <header class="onboarding-header">
+        <button class="onboarding-back-button" data-back-step="1"><</button>
+      </header>
+
+      <div class="onboarding-body">
+        <h1 class="onboarding-title">nice to meet you</h1>
+        <p class="onboarding-subtitle">this helps me keep things personal.</p>
+
+        <label class="onboarding-label">how old are you?</label>
+        <input id="onboarding-age-input" class="onboarding-input" type="number" min="5" max="120" placeholder="your age" />
+
+        <button id="onboarding-next-2" class="primary-button full-width">next</button>
+      </div>
+    </section>
 
     <!-- STEP 3 -->
-    <div class="onboarding-step">
-      <h2>what do you want to improve?</h2>
-      <label><input type="checkbox" name="purpose" value="study"> study</label>
-      <label><input type="checkbox" name="purpose" value="focus"> focus</label>
-      <label><input type="checkbox" name="purpose" value="notes"> notes</label>
-      <button id="onboarding-finish" class="primary-button">finish</button>
-    </div>
+    <section class="onboarding-card" data-step="3">
+      <header class="onboarding-header">
+        <button class="onboarding-back-button" data-back-step="2"><</button>
+      </header>
+
+      <div class="onboarding-body">
+        <h1 class="onboarding-title">what brings you here?</h1>
+        <p class="onboarding-subtitle">choose as many as you like.</p>
+
+        <div class="onboarding-checkbox-group">
+          <label class="checkbox-pill">
+            <input type="checkbox" name="purpose" value="study" />
+            <span>study better</span>
+          </label>
+
+          <label class="checkbox-pill">
+            <input type="checkbox" name="purpose" value="focus" />
+            <span>stay focused</span>
+          </label>
+
+          <label class="checkbox-pill">
+            <input type="checkbox" name="purpose" value="organise" />
+            <span>organise my life</span>
+          </label>
+
+          <label class="checkbox-pill">
+            <input type="checkbox" name="purpose" value="revision" />
+            <span>revision & exams</span>
+          </label>
+        </div>
+
+        <button id="onboarding-finish" class="primary-button full-width">start aura</button>
+      </div>
+    </section>
 
   </div>
 </div>
-
 <!-- =========================================================
      APP ROOT
 ========================================================= -->
 <div id="app-root">
 
-  <!-- HOME -->
-  <div class="aura-screen is-active" data-screen="home">
-    <h1 id="home-greeting">hello</h1>
+  <main class="app-main">
 
-    <h3>tasks</h3>
-    <ul id="todo-list"></ul>
-    <button id="todo-add-button" class="primary-button">add task</button>
-  </div>
+    <!-- =====================================================
+         HOME
+    ====================================================== -->
+    <section class="aura-screen is-active" data-screen="home">
+      <header class="screen-header">
+        <div>
+          <p class="screen-eyebrow">today</p>
+          <h1 id="home-greeting" class="screen-title">hello, friend</h1>
+        </div>
+      </header>
 
-  <!-- FLASHCARDS -->
-  <div class="aura-screen" data-screen="flashcards">
-    <h2>your decks</h2>
-    <div id="deck-grid"></div>
-    <button id="add-deck-button" class="primary-button">add deck</button>
-  </div>
+      <section class="glass-card">
+        <h2 class="card-title">today's focus</h2>
+        <ul id="todo-list" class="todo-list"></ul>
+        <button id="todo-add-button" class="primary-button full-width">add task</button>
+        <p class="hint-text">swipe left on a task to delete.</p>
+      </section>
 
-  <!-- FLASHCARD VIEWER -->
-  <div class="aura-screen" data-screen="flashcard-viewer">
-    <button id="back-to-decks" class="ghost-button">back</button>
-    <h2 id="deck-viewer-title"></h2>
+      <section class="glass-card">
+        <h2 class="card-title">pomodoro stats</h2>
+        <p id="pomodoro-stats-sessions" class="stats-line">sessions: 0</p>
+        <p id="pomodoro-stats-time" class="stats-line">focused time: 0 min</p>
+      </section>
 
-    <div id="flashcard">
-      <div id="flashcard-front"></div>
-      <div id="flashcard-back"></div>
+      <section class="glass-card">
+        <h2 class="card-title">quick note</h2>
+        <button id="quick-note-button" class="ghost-button full-width">open note editor</button>
+      </section>
+    </section>
+
+    <!-- =====================================================
+         DECK LIST
+    ====================================================== -->
+    <section class="aura-screen" data-screen="flashcards">
+      <header class="screen-header">
+        <div>
+          <p class="screen-eyebrow">memory lane</p>
+          <h1 class="screen-title">decks</h1>
+        </div>
+
+        <button id="add-deck-button" class="primary-button small">new deck</button>
+      </header>
+
+      <section id="deck-grid" class="deck-grid"></section>
+    </section>
+
+    <!-- =====================================================
+         FLASHCARD VIEWER
+    ====================================================== -->
+    <section class="aura-screen" data-screen="flashcard-viewer">
+      <header class="screen-header">
+        <button id="back-to-decks" class="icon-button">decks</button>
+        <h1 id="deck-viewer-title" class="screen-title">deck</h1>
+      </header>
+
+      <section class="glass-card">
+
+        <div class="flashcard-wrapper">
+          <div id="flashcard" class="flashcard">
+            <div id="flashcard-front" class="flashcard-face flashcard-front"></div>
+            <div id="flashcard-back" class="flashcard-face flashcard-back"></div>
+          </div>
+
+          <p id="flashcard-progress" class="flashcard-progress"></p>
+        </div>
+
+        <div class="flashcard-controls">
+          <button id="flashcard-prev" class="ghost-button full-width">previous</button>
+          <button id="flashcard-flip" class="primary-button full-width">flip</button>
+          <button id="flashcard-next" class="ghost-button full-width">next</button>
+        </div>
+
+        <div class="flashcard-crud">
+          <button id="add-card-button" class="ghost-button full-width">add card</button>
+          <button id="edit-card-button" class="ghost-button full-width">edit card</button>
+          <button id="delete-card-button" class="ghost-button full-width danger">delete card</button>
+        </div>
+
+        <div class="flashcard-deck-actions">
+          <button id="rename-deck-button" class="ghost-button full-width">rename deck</button>
+          <button id="delete-deck-button" class="ghost-button full-width danger">delete deck</button>
+        </div>
+
+      </section>
+    </section>
+
+    <!-- =====================================================
+         FLASHCARD MODAL
+    ====================================================== -->
+    <div id="flashcard-modal" class="modal-overlay">
+      <div class="modal-card">
+        <h2 id="flashcard-modal-title" class="card-title">card</h2>
+
+        <label class="onboarding-label">front</label>
+        <textarea id="flashcard-front-input" class="modal-textarea"></textarea>
+
+        <label class="onboarding-label">back</label>
+        <textarea id="flashcard-back-input" class="modal-textarea"></textarea>
+
+        <div class="modal-actions">
+          <button id="flashcard-modal-cancel" class="ghost-button full-width">cancel</button>
+          <button id="flashcard-modal-save" class="primary-button full-width">save</button>
+        </div>
+      </div>
     </div>
 
-    <p id="flashcard-progress"></p>
+    <!-- =====================================================
+         NOTES
+    ====================================================== -->
+    <section class="aura-screen" data-screen="notes">
+      <header class="screen-header">
+        <div>
+          <p class="screen-eyebrow">brain dump</p>
+          <h1 class="screen-title">notes</h1>
+        </div>
 
-    <button id="flashcard-flip" class="primary-button">flip</button>
-    <button id="flashcard-prev" class="ghost-button">prev</button>
-    <button id="flashcard-next" class="ghost-button">next</button>
+        <button id="add-note-button" class="primary-button small">new note</button>
+      </header>
 
-    <hr style="margin:20px 0">
+      <div class="notes-search-row">
+        <input id="notes-search-input" class="onboarding-input" placeholder="search notes" />
+      </div>
 
-    <button id="add-card-button" class="primary-button">add card</button>
-    <button id="edit-card-button" class="ghost-button">edit card</button>
-    <button id="delete-card-button" class="ghost-button">delete card</button>
+      <section id="notes-list" class="notes-grid"></section>
+    </section>
 
-    <hr style="margin:20px 0">
+    <!-- =====================================================
+         FULL-SCREEN NOTE EDITOR
+    ====================================================== -->
+    <div id="note-editor-overlay" class="note-editor-overlay">
+      <div class="note-editor">
 
-    <button id="rename-deck-button" class="ghost-button">rename deck</button>
-    <button id="delete-deck-button" class="ghost-button">delete deck</button>
-  </div>
+        <header class="note-editor-header">
+          <input id="note-editor-title-input" class="note-title-input" placeholder="note title" />
 
-  <!-- NOTES -->
-  <div class="aura-screen" data-screen="notes">
-    <input id="notes-search-input" placeholder="search notes..." />
-    <button id="add-note-button" class="primary-button">new note</button>
-    <div id="notes-list"></div>
-  </div>
+          <div class="note-editor-actions">
+            <button id="pin-note-button" class="ghost-button small">pin</button>
+            <button id="delete-note-button" class="ghost-button small danger">delete</button>
+            <button id="close-note-editor" class="icon-button"><</button>
+          </div>
+        </header>
 
-  <!-- NOTE EDITOR -->
-  <div id="note-editor-overlay">
-    <button id="close-note-editor" class="ghost-button">close</button>
+        <div class="note-tags-row">
+          <input id="note-tags-input" class="onboarding-input" placeholder="tags (comma separated)" />
+        </div>
 
-    <input id="note-editor-title-input" placeholder="title..." />
+        <div class="note-toolbar">
+          <button data-command="bold" class="toolbar-button">Bold</button>
+          <button data-command="italic" class="toolbar-button">Italic</button>
+          <button data-command="formatBlock" data-value="h1" class="toolbar-button">H1</button>
+          <button data-command="formatBlock" data-value="h2" class="toolbar-button">H2</button>
+          <button data-command="insertUnorderedList" class="toolbar-button">Bullet</button>
+          <button data-command="insertUnorderedList" data-checklist="true" class="toolbar-button">Checklist</button>
+          <button data-command="formatBlock" data-value="blockquote" class="toolbar-button">Quote</button>
+        </div>
 
-    <div id="note-editor-content" contenteditable="true"></div>
+        <div id="note-editor-content" class="note-editor-content" contenteditable="true"></div>
 
-    <input id="note-tags-input" placeholder="tags..." />
+        <button id="save-note-button" class="primary-button full-width save-note-fixed">save note</button>
 
-    <button id="pin-note-button" class="ghost-button">pin</button>
-    <button id="save-note-button" class="primary-button">save</button>
-    <button id="delete-note-button" class="ghost-button">delete</button>
-  </div>
-
-  <!-- TIMER -->
-  <div class="aura-screen" data-screen="timer">
-    <div class="timer-wrapper">
-      <svg class="timer-ring" width="220" height="220">
-        <circle class="timer-ring-bg" cx="110" cy="110" r="90"></circle>
-        <circle class="timer-ring-progress" cx="110" cy="110" r="90"></circle>
-      </svg>
-      <div id="pomodoro-time" class="timer-center">25:00</div>
+      </div>
     </div>
 
-    <div>
-      <input id="timer-hours" type="number" placeholder="hours" />
-      <input id="timer-minutes" type="number" placeholder="minutes" />
-    </div>
+    <!-- =====================================================
+         TIMER
+    ====================================================== -->
+    <section class="aura-screen" data-screen="timer">
+      <header class="screen-header">
+        <div>
+          <p class="screen-eyebrow">deep work</p>
+          <h1 class="screen-title">pomodoro</h1>
+        </div>
+      </header>
 
-    <button id="pomodoro-toggle" class="primary-button">start</button>
-    <button id="pomodoro-reset" class="ghost-button">reset</button>
+      <section class="glass-card timer-card">
 
-    <p id="pomodoro-stats-sessions"></p>
-    <p id="pomodoro-stats-time"></p>
-  </div>
+        <div class="timer-ring-wrapper">
+          <svg class="timer-ring" width="220" height="220">
+            <circle class="timer-ring-bg" cx="110" cy="110" r="90" />
+            <circle class="timer-ring-progress" cx="110" cy="110" r="90" />
+          </svg>
 
-  <!-- SETTINGS -->
-  <div class="aura-screen" data-screen="settings">
-    <button id="settings-change-name" class="primary-button">change name</button>
-    <button id="settings-theme-toggle" class="ghost-button">toggle theme</button>
-  </div>
+          <div class="timer-center">
+            <p id="pomodoro-time" class="timer-display">25:00</p>
+          </div>
+        </div>
 
-  <!-- NAVIGATION -->
-  <div class="bottom-nav">
-    <div class="bottom-nav-item is-active" data-screen-target="home">home</div>
-    <div class="bottom-nav-item" data-screen-target="flashcards">decks</div>
-    <div class="bottom-nav-item" data-screen-target="notes">notes</div>
-    <div class="bottom-nav-item" data-screen-target="timer">timer</div>
-    <div class="bottom-nav-item" data-screen-target="settings">settings</div>
-  </div>
+        <div class="timer-inputs">
+          <div class="timer-input-group">
+            <label>hours</label>
+            <input id="timer-hours" type="number" min="0" max="12" value="0" />
+          </div>
 
+          <div class="timer-input-group">
+            <label>minutes</label>
+            <input id="timer-minutes" type="number" min="0" max="180" value="25" />
+          </div>
+        </div>
+
+        <div class="timer-buttons">
+          <button id="pomodoro-toggle" class="primary-button full-width">start</button>
+          <button id="pomodoro-reset" class="ghost-button full-width">reset</button>
+        </div>
+
+      </section>
+    </section>
+
+    <!-- =====================================================
+         SETTINGS
+    ====================================================== -->
+    <section class="aura-screen" data-screen="settings">
+      <header class="screen-header">
+        <div>
+          <p class="screen-eyebrow">tune aura</p>
+          <h1 class="screen-title">settings</h1>
+        </div>
+      </header>
+
+      <section class="glass-card">
+        <h2 class="card-title">profile</h2>
+        <button id="settings-change-name" class="ghost-button full-width">change name</button>
+      </section>
+
+      <section class="glass-card">
+        <h2 class="card-title">appearance</h2>
+        <button id="settings-theme-toggle" class="ghost-button full-width">toggle light // dark</button>
+      </section>
+    </section>
+
+  </main>
+    <!-- =====================================================
+         BOTTOM NAVIGATION
+    ====================================================== -->
+    <nav class="bottom-nav">
+      <button class="bottom-nav-item is-active" data-screen-target="home">
+        <span>home</span>
+      </button>
+
+      <button class="bottom-nav-item" data-screen-target="flashcards">
+        <span>decks</span>
+      </button>
+
+      <button class="bottom-nav-item" data-screen-target="notes">
+        <span>notes</span>
+      </button>
+
+      <button class="bottom-nav-item" data-screen-target="timer">
+        <span>timer</span>
+      </button>
+
+      <button class="bottom-nav-item" data-screen-target="settings">
+        <span>settings</span>
+      </button>
+    </nav>
+
+  </main>
 </div>
 
-<script src="app.js"></script>
+<!-- Scripts -->
+<script type="module" src="assets/js/app.js"></script>
+
 </body>
 </html>
