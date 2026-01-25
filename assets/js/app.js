@@ -1,14 +1,12 @@
 /* =========================================================
-   SECTION 1 — HELPERS + GLOBAL STATE + ONBOARDING
+   SECTION 1 — ONBOARDING + NAVIGATION + TODOS + DECKS
 ========================================================= */
 
 function $(id) {
   return document.getElementById(id);
 }
 
-/* -------------------------
-   GLOBAL STATE
-------------------------- */
+/* GLOBAL STATE */
 let userName = localStorage.getItem("aura-username") || "";
 let userAge = localStorage.getItem("aura-age") || "";
 let userPurposes = JSON.parse(localStorage.getItem("aura-purposes") || "[]");
@@ -24,20 +22,15 @@ let pomodoroStats = JSON.parse(
 
 let currentDeck = null;
 let currentCardIndex = 0;
-
 let noteSearchQuery = "";
 let timerInterval = null;
 let totalSeconds = 1500;
 let remainingSeconds = 1500;
 
-/* -------------------------
-   ELEMENT REFERENCES
-------------------------- */
+/* ELEMENTS */
 const appRoot = $("app-root");
-
 const notesList = $("notes-list");
 const notesSearchInput = $("notes-search-input");
-
 const noteEditorOverlay = $("note-editor-overlay");
 const noteEditorTitle = $("note-editor-title-input");
 const noteEditorContent = $("note-editor-content");
@@ -57,17 +50,13 @@ const timerDisplay = $("pomodoro-time");
 const hourInput = $("timer-hours");
 const minuteInput = $("timer-minutes");
 
-/* -------------------------
-   EVENT LISTENER HELPER
-------------------------- */
+/* HELPERS */
 function on(id, event, handler) {
   const el = $(id);
   if (el) el.addEventListener(event, handler);
 }
 
-/* -------------------------
-   SCREEN SWITCHING
-------------------------- */
+/* SCREEN SWITCHING */
 function showScreen(name) {
   document.querySelectorAll(".aura-screen").forEach(screen => {
     screen.classList.remove("is-active");
@@ -81,9 +70,7 @@ function showScreen(name) {
   });
 }
 
-/* -------------------------
-   ONBOARDING LOGIC
-------------------------- */
+/* ONBOARDING */
 const onboardingScreen = $("onboarding-screen");
 
 on("onboarding-next-1", "click", () => {
@@ -121,20 +108,7 @@ on("onboarding-finish", "click", () => {
   $("home-greeting").textContent = `hello, ${userName}`;
 });
 
-/* back buttons */
-document.querySelectorAll(".onboarding-back-button").forEach(btn => {
-  btn.addEventListener("click", () => {
-    const backStep = btn.dataset.backStep;
-    document.querySelectorAll(".onboarding-card").forEach(card => {
-      card.style.display = "none";
-    });
-    document.querySelector(`[data-step="${backStep}"]`).style.display = "block";
-  });
-});
-/* =========================================================
-   SECTION 2 — NAVIGATION + TODOS
-========================================================= */
-
+/* NAVIGATION */
 document.querySelectorAll(".bottom-nav-item").forEach(btn => {
   btn.addEventListener("click", () => {
     const target = btn.dataset.screenTarget;
@@ -142,21 +116,11 @@ document.querySelectorAll(".bottom-nav-item").forEach(btn => {
   });
 });
 
-/* quick note button opens new note */
-on("quick-note-button", "click", () => {
-  openNoteEditor(null);
-});
-
-/* -------------------------
-   SAVE TODOS
-------------------------- */
+/* TODOS */
 function saveTodos() {
   localStorage.setItem("aura-todos", JSON.stringify(todos));
 }
 
-/* -------------------------
-   RENDER TODOS
-------------------------- */
 function renderTodos() {
   const list = $("todo-list");
   list.innerHTML = "";
@@ -183,9 +147,6 @@ function renderTodos() {
   });
 }
 
-/* -------------------------
-   ADD TODO
-------------------------- */
 on("todo-add-button", "click", () => {
   const text = prompt("new task:");
   if (!text) return;
@@ -195,9 +156,7 @@ on("todo-add-button", "click", () => {
   renderTodos();
 });
 
-/* -------------------------
-   SWIPE-TO-DELETE (TOUCH)
-------------------------- */
+/* SWIPE TO DELETE */
 let todoSwipeStartX = 0;
 
 document.addEventListener("touchstart", e => {
@@ -220,10 +179,8 @@ document.addEventListener("touchend", e => {
     }
   }
 });
-/* =========================================================
-   SECTION 3 — DECKS + FLASHCARDS + MODAL
-========================================================= */
 
+/* DECKS + FLASHCARDS */
 function saveDecks() {
   localStorage.setItem("aura-decks", JSON.stringify(decks));
 }
@@ -416,7 +373,7 @@ on("delete-deck-button", "click", () => {
   showScreen("flashcards");
 });
 /* =========================================================
-   SECTION 4 — NOTES + EDITOR
+   SECTION 2 — NOTES + EDITOR (FIXED) + SEARCH + TOOLBAR
 ========================================================= */
 
 function saveNotes() {
@@ -459,10 +416,10 @@ function renderNotes() {
   });
 }
 
+/* ⭐ FIXED: DO NOT HIDE app-root ⭐ */
 function openNoteEditor(index = null) {
   noteEditorOverlay.classList.add("is-visible");
   noteEditorOverlay.style.display = "flex";
-  appRoot.style.display = "none";
 
   if (index === null) {
     noteEditorOverlay.dataset.editing = "new";
@@ -484,10 +441,10 @@ function openNoteEditor(index = null) {
   }
 }
 
+/* ⭐ FIXED: DO NOT SHOW app-root (it was never hidden) ⭐ */
 on("close-note-editor", "click", () => {
   noteEditorOverlay.classList.remove("is-visible");
   noteEditorOverlay.style.display = "none";
-  appRoot.style.display = "flex";
 });
 
 on("save-note-button", "click", () => {
@@ -528,7 +485,6 @@ on("save-note-button", "click", () => {
 
   noteEditorOverlay.classList.remove("is-visible");
   noteEditorOverlay.style.display = "none";
-  appRoot.style.display = "flex";
 });
 
 on("delete-note-button", "click", () => {
@@ -536,7 +492,6 @@ on("delete-note-button", "click", () => {
   if (editing === "new") {
     noteEditorOverlay.classList.remove("is-visible");
     noteEditorOverlay.style.display = "none";
-    appRoot.style.display = "flex";
     return;
   }
 
@@ -548,7 +503,6 @@ on("delete-note-button", "click", () => {
 
   noteEditorOverlay.classList.remove("is-visible");
   noteEditorOverlay.style.display = "none";
-  appRoot.style.display = "flex";
 });
 
 on("pin-note-button", "click", () => {
@@ -562,6 +516,7 @@ notesSearchInput.addEventListener("input", () => {
   renderNotes();
 });
 
+/* TOOLBAR */
 document.querySelectorAll(".toolbar-button").forEach(btn => {
   btn.addEventListener("click", () => {
     const command = btn.dataset.command;
@@ -576,7 +531,7 @@ document.querySelectorAll(".toolbar-button").forEach(btn => {
   });
 });
 /* =========================================================
-   SECTION 5 — TIMER + RING + STATS
+   SECTION 3 — TIMER + STATS + INIT
 ========================================================= */
 
 function savePomodoroStats() {
@@ -588,7 +543,7 @@ function renderPomodoroStats() {
   $("pomodoro-stats-time").textContent = `focused time: ${Math.floor(pomodoroStats.seconds / 60)} min`;
 }
 
-/* TIMER RING SETUP — matches r=90, 220px */
+/* TIMER RING */
 const ring = document.querySelector(".timer-ring-progress");
 const radius = 90;
 const circumference = 2 * Math.PI * radius;
@@ -621,7 +576,6 @@ on("pomodoro-toggle", "click", () => {
     return;
   }
 
-  /* If starting fresh */
   if (remainingSeconds === totalSeconds) {
     const hours = Number(hourInput.value) || 0;
     const minutes = Number(minuteInput.value) || 0;
@@ -678,47 +632,14 @@ on("pomodoro-reset", "click", () => {
 
   $("pomodoro-toggle").textContent = "start";
 });
-/* =========================================================
-   SECTION 6 — SETTINGS
-========================================================= */
 
-on("settings-change-name", "click", () => {
-  const newName = prompt("what should i call you?");
-  if (!newName) return;
-
-  userName = newName.trim();
-  localStorage.setItem("aura-username", userName);
-  $("home-greeting").textContent = `hello, ${userName}`;
-});
-
-on("settings-theme-toggle", "click", () => {
-  const root = document.documentElement;
-  const current = root.getAttribute("data-theme");
-
-  const next = current === "light" ? "dark" : "light";
-  root.setAttribute("data-theme", next);
-
-  localStorage.setItem("aura-theme", next);
-});
-
-/* Apply saved theme on load */
-(function applySavedTheme() {
-  const saved = localStorage.getItem("aura-theme");
-  if (saved) {
-    document.documentElement.setAttribute("data-theme", saved);
-  }
-})();
-/* =========================================================
-   SECTION 7 — INIT + FIRST RENDER
-========================================================= */
-
+/* INIT */
 function init() {
   renderTodos();
   renderDecks();
   renderNotes();
   renderPomodoroStats();
 
-  /* If onboarding already done */
   if (userName) {
     onboardingScreen.style.display = "none";
     appRoot.style.display = "flex";
@@ -732,7 +653,6 @@ function init() {
     document.querySelector('[data-step="3"]').style.display = "none";
   }
 
-  /* Timer initial state */
   timerDisplay.textContent = formatTime(remainingSeconds);
   updateRing();
 }
