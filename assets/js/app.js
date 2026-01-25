@@ -17,7 +17,7 @@ let timerInterval = null;
 let totalSeconds = 1500;
 let remainingSeconds = totalSeconds;
 
-/* Timer ring setup */
+/* Timer ring */
 
 const ring = document.querySelector(".timer-ring-progress");
 const radius = 100;
@@ -42,7 +42,6 @@ const screens = document.querySelectorAll(".aura-screen");
 const navButtons = document.querySelectorAll(".bottom-nav-item");
 
 const deckGrid = document.getElementById("deck-grid");
-const deckViewer = document.getElementById("deck-viewer-panel");
 
 const flashcard = document.getElementById("flashcard");
 const flashcardFront = document.getElementById("flashcard-front");
@@ -90,8 +89,9 @@ if (!userName || !userAge || !userPurpose.length) {
   appRoot.style.display = "none";
   goToOnboardingStep(1);
 } else {
-  onboardingScreen.style.display = "none";
+  onboardingScreen.style.display = "flex";
   appRoot.style.display = "flex";
+  onboardingScreen.style.display = "none";
   const greet = document.getElementById("home-greeting");
   if (greet) greet.textContent = `hello, ${userName}`;
 }
@@ -149,8 +149,8 @@ document.getElementById("settings-change-name")?.addEventListener("click", () =>
 
 document.getElementById("settings-theme-toggle")?.addEventListener("click", () => {
   const root = document.documentElement;
-  const current = root.getAttribute("data-theme") || "light";
-  const next = current === "light" ? "dark" : "light";
+  const current = root.getAttribute("data-theme") || "dark";
+  const next = current === "dark" ? "light" : "dark";
   root.setAttribute("data-theme", next);
   localStorage.setItem("aura-theme", next);
 });
@@ -164,15 +164,19 @@ if (savedTheme) {
    NAVIGATION
 ========================= */
 
+function showScreen(name) {
+  screens.forEach(s => s.classList.remove("is-active"));
+  document.querySelector(`[data-screen="${name}"]`)?.classList.add("is-active");
+}
+
 navButtons.forEach(btn => {
   btn.addEventListener("click", () => {
     const target = btn.dataset.screenTarget;
 
-    screens.forEach(s => s.classList.remove("is-active"));
-    document.querySelector(`[data-screen="${target}"]`)?.classList.add("is-active");
-
     navButtons.forEach(b => b.classList.remove("is-active"));
     btn.classList.add("is-active");
+
+    showScreen(target);
   });
 });
 
@@ -229,26 +233,23 @@ function renderDecks() {
   if (!deckGrid) return;
   deckGrid.innerHTML = "";
 
-  Object.keys(decks).forEach(deckName => {
+  const names = Object.keys(decks);
+  if (!names.length) {
+    const empty = document.createElement("p");
+    empty.textContent = "no decks yet. create one to get started.";
+    empty.style.fontSize = "13px";
+    empty.style.color = "#c7c7d9";
+    deckGrid.appendChild(empty);
+    return;
+  }
+
+  names.forEach(deckName => {
     const card = document.createElement("div");
     card.className = "deck-card";
     card.innerHTML = `<div>${deckName}</div>`;
 
     card.addEventListener("click", () => openDeck(deckName));
 
-    const deleteBtn = document.createElement("button");
-    deleteBtn.textContent = "delete deck";
-    deleteBtn.className = "ghost-button small danger";
-    deleteBtn.addEventListener("click", e => {
-      e.stopPropagation();
-      if (confirm(`delete deck "${deckName}"?`)) {
-        delete decks[deckName];
-        saveDecks();
-        renderDecks();
-      }
-    });
-
-    card.appendChild(deleteBtn);
     deckGrid.appendChild(card);
   });
 }
@@ -260,13 +261,19 @@ function openDeck(name) {
   currentCardIndex = 0;
 
   document.getElementById("deck-viewer-title").textContent = name;
-  deckViewer.classList.add("is-visible");
-
+  flashcard.classList.remove("is-flipped");
   renderFlashcard();
+
+  // switch to flashcard viewer screen
+  showScreen("flashcard-viewer");
+  navButtons.forEach(b => b.classList.remove("is-active"));
+  document
+    .querySelector('.bottom-nav-item[data-screen-target="flashcards"]')
+    ?.classList.add("is-active");
 }
 
-document.getElementById("close-deck-viewer")?.addEventListener("click", () => {
-  deckViewer.classList.remove("is-visible");
+document.getElementById("back-to-decks")?.addEventListener("click", () => {
+  showScreen("flashcards");
 });
 
 function renderFlashcard() {
@@ -363,7 +370,7 @@ document.getElementById("delete-deck-button")?.addEventListener("click", () => {
   delete decks[currentDeck];
   saveDecks();
   renderDecks();
-  deckViewer.classList.remove("is-visible");
+  showScreen("flashcards");
 });
 
 document.getElementById("add-deck-button")?.addEventListener("click", () => {

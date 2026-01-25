@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -60,7 +60,6 @@
 
   <!-- App root -->
   <div id="app-root">
-    <!-- Main content -->
     <main class="app-main">
       <!-- Home -->
       <section class="aura-screen is-active" data-screen="home">
@@ -78,51 +77,52 @@
         </section>
       </section>
 
-      <!-- Flashcards -->
+      <!-- Flashcards: deck list -->
       <section class="aura-screen" data-screen="flashcards">
         <header class="screen-header">
           <div>
             <p class="screen-eyebrow">memory lane</p>
-            <h1 class="screen-title">flashcards</h1>
+            <h1 class="screen-title">decks</h1>
           </div>
           <button id="add-deck-button" class="ghost-button small">new deck</button>
         </header>
 
         <section id="deck-grid" class="deck-grid"></section>
+      </section>
 
-        <!-- Deck viewer -->
-        <div id="deck-viewer-panel" class="deck-viewer">
-          <div class="deck-viewer-inner">
-            <header class="deck-viewer-header">
-              <button id="close-deck-viewer" class="icon-button">✕</button>
-              <h2 id="deck-viewer-title" class="deck-viewer-title">deck</h2>
-              <div class="deck-viewer-actions">
-                <button id="rename-deck-button" class="ghost-button small">rename</button>
-                <button id="delete-deck-button" class="ghost-button small danger">delete</button>
-              </div>
-            </header>
+      <!-- Flashcards: viewer (dedicated screen) -->
+      <section class="aura-screen" data-screen="flashcard-viewer">
+        <header class="screen-header">
+          <button id="back-to-decks" class="icon-button">← decks</button>
+          <h1 id="deck-viewer-title" class="screen-title">deck</h1>
+        </header>
 
-            <div class="flashcard-wrapper">
-              <div id="flashcard" class="flashcard">
-                <div id="flashcard-front" class="flashcard-face flashcard-front"></div>
-                <div id="flashcard-back" class="flashcard-face flashcard-back"></div>
-              </div>
-              <p id="flashcard-progress" class="flashcard-progress"></p>
+        <section class="glass-card">
+          <div class="flashcard-wrapper">
+            <div id="flashcard" class="flashcard">
+              <div id="flashcard-front" class="flashcard-face flashcard-front"></div>
+              <div id="flashcard-back" class="flashcard-face flashcard-back"></div>
             </div>
-
-            <div class="flashcard-controls">
-              <button id="flashcard-prev" class="ghost-button full-width">previous</button>
-              <button id="flashcard-flip" class="primary-button full-width">flip</button>
-              <button id="flashcard-next" class="ghost-button full-width">next</button>
-            </div>
-
-            <div class="flashcard-crud">
-              <button id="add-card-button" class="ghost-button full-width">add card</button>
-              <button id="edit-card-button" class="ghost-button full-width">edit card</button>
-              <button id="delete-card-button" class="ghost-button full-width danger">delete card</button>
-            </div>
+            <p id="flashcard-progress" class="flashcard-progress"></p>
           </div>
-        </div>
+
+          <div class="flashcard-controls">
+            <button id="flashcard-prev" class="ghost-button full-width">previous</button>
+            <button id="flashcard-flip" class="primary-button full-width">flip</button>
+            <button id="flashcard-next" class="ghost-button full-width">next</button>
+          </div>
+
+          <div class="flashcard-crud">
+            <button id="add-card-button" class="ghost-button full-width">add card</button>
+            <button id="edit-card-button" class="ghost-button full-width">edit card</button>
+            <button id="delete-card-button" class="ghost-button full-width danger">delete card</button>
+          </div>
+
+          <div class="flashcard-deck-actions">
+            <button id="rename-deck-button" class="ghost-button full-width">rename deck</button>
+            <button id="delete-deck-button" class="ghost-button full-width danger">delete deck</button>
+          </div>
+        </section>
       </section>
 
       <!-- Notes -->
@@ -223,7 +223,7 @@
         <span>home</span>
       </button>
       <button class="bottom-nav-item" data-screen-target="flashcards">
-        <span>cards</span>
+        <span>decks</span>
       </button>
       <button class="bottom-nav-item" data-screen-target="notes">
         <span>notes</span>

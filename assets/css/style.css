@@ -1,29 +1,27 @@
 :root {
-  --bg: #05060a;
-  --bg-soft: rgba(255, 255, 255, 0.04);
-  --bg-softer: rgba(255, 255, 255, 0.02);
-  --accent: #7c5cff;
-  --accent-soft: rgba(124, 92, 255, 0.2);
-  --text: #f7f7ff;
-  --text-soft: #a5a7c4;
+  --bg: #000000;
+  --bg-soft: rgba(255, 255, 255, 0.06);
+  --bg-softer: rgba(255, 255, 255, 0.03);
+  --accent: #7c5cff; /* tiny purple accent */
+  --accent-soft: rgba(124, 92, 255, 0.18);
+  --text: #ffffff;
+  --text-soft: #c7c7d9;
   --danger: #ff4b6a;
-  --border-soft: rgba(255, 255, 255, 0.08);
-  --shadow-soft: 0 18px 45px rgba(0, 0, 0, 0.55);
-  --radius-lg: 24px;
-  --radius-md: 18px;
+  --border-soft: rgba(255, 255, 255, 0.12);
+  --shadow-soft: 0 18px 45px rgba(0, 0, 0, 0.85);
+  --radius-lg: 22px;
+  --radius-md: 16px;
   --radius-pill: 999px;
-  --blur: 24px;
+  --blur: 22px;
 }
 
 [data-theme="light"] {
-  --bg: #f5f5ff;
-  --bg-soft: rgba(255, 255, 255, 0.9);
-  --bg-softer: rgba(255, 255, 255, 0.7);
-  --accent: #7c5cff;
-  --accent-soft: rgba(124, 92, 255, 0.15);
-  --text: #151528;
+  --bg: #fdfdff;
+  --bg-soft: rgba(255, 255, 255, 0.95);
+  --bg-softer: rgba(255, 255, 255, 0.85);
+  --text: #050509;
   --text-soft: #5b5d7a;
-  --border-soft: rgba(0, 0, 0, 0.06);
+  --border-soft: rgba(0, 0, 0, 0.08);
   --shadow-soft: 0 18px 40px rgba(15, 15, 40, 0.18);
 }
 
@@ -44,14 +42,14 @@ body {
 
 body {
   font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-  background: radial-gradient(circle at top, #151528 0, #05060a 55%, #000 100%);
+  background: #000000;
   color: var(--text);
   display: flex;
-  align-items: stretch;
+  align-items: center;
   justify-content: center;
 }
 
-/* Layout */
+/* App shell */
 
 #app-root {
   width: 100%;
@@ -59,17 +57,17 @@ body {
   height: 100vh;
   display: none;
   flex-direction: column;
-  background: linear-gradient(145deg, rgba(255, 255, 255, 0.02), rgba(0, 0, 0, 0.9));
-  border-radius: 32px;
-  border: 1px solid var(--border-soft);
-  box-shadow: var(--shadow-soft);
+  background: #000000;
+  border-radius: 0;
+  border: none;
+  box-shadow: none;
   overflow: hidden;
   position: relative;
 }
 
 .app-main {
   flex: 1;
-  padding: 18px 18px 80px;
+  padding: 16px 16px 12px;
   overflow-y: auto;
 }
 
@@ -81,7 +79,7 @@ body {
   display: none;
   align-items: center;
   justify-content: center;
-  background: radial-gradient(circle at top, #151528 0, #05060a 55%, #000 100%);
+  background: #000000;
   z-index: 50;
 }
 
@@ -109,6 +107,7 @@ body {
   font-size: 28px;
   font-weight: 600;
   margin: 0;
+  color: var(--text);
 }
 
 .onboarding-subtitle {
@@ -126,14 +125,14 @@ body {
   border-radius: var(--radius-pill);
   border: 1px solid var(--border-soft);
   padding: 12px 16px;
-  background: rgba(0, 0, 0, 0.35);
+  background: #000000;
   color: var(--text);
   outline: none;
   font-size: 14px;
 }
 
 .onboarding-input::placeholder {
-  color: rgba(165, 167, 196, 0.7);
+  color: rgba(199, 199, 217, 0.7);
 }
 
 .onboarding-checkbox-group {
@@ -171,7 +170,7 @@ body {
 
 .aura-screen {
   display: none;
-  animation: fadeIn 0.25s ease-out;
+  animation: fadeIn 0.2s ease-out;
 }
 
 .aura-screen.is-active {
@@ -181,7 +180,7 @@ body {
 @keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(6px);
+    transform: translateY(4px);
   }
   to {
     opacity: 1;
@@ -195,7 +194,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 18px;
+  margin-bottom: 16px;
 }
 
 .screen-eyebrow {
@@ -244,8 +243,8 @@ body {
 }
 
 .primary-button {
-  background: linear-gradient(135deg, #7c5cff, #b794ff);
-  color: #fff;
+  background: linear-gradient(135deg, var(--accent), #b794ff);
+  color: #ffffff;
   padding: 10px 16px;
   box-shadow: 0 12px 30px rgba(124, 92, 255, 0.45);
 }
@@ -263,7 +262,7 @@ body {
 }
 
 .ghost-button:hover {
-  background: rgba(255, 255, 255, 0.04);
+  background: rgba(255, 255, 255, 0.06);
 }
 
 .icon-button {
@@ -287,23 +286,18 @@ body {
 
 .danger {
   color: var(--danger);
-  border-color: rgba(255, 75, 106, 0.4);
+  border-color: rgba(255, 75, 106, 0.5);
 }
 
 /* Bottom nav */
 
 .bottom-nav {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
   height: 64px;
   display: flex;
   align-items: center;
   justify-content: space-around;
-  background: rgba(5, 6, 10, 0.92);
+  background: #000000;
   border-top: 1px solid var(--border-soft);
-  backdrop-filter: blur(18px);
 }
 
 .bottom-nav-item {
@@ -315,6 +309,10 @@ body {
   font-size: 12px;
   text-transform: lowercase;
   cursor: pointer;
+}
+
+.bottom-nav-item span {
+  pointer-events: none;
 }
 
 .bottom-nav-item.is-active {
@@ -345,8 +343,8 @@ body {
 /* Decks */
 
 .deck-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  display: flex;
+  flex-direction: column;
   gap: 10px;
 }
 
@@ -362,51 +360,7 @@ body {
   cursor: pointer;
 }
 
-/* Deck viewer */
-
-.deck-viewer {
-  position: fixed;
-  inset: 0;
-  display: none;
-  align-items: flex-end;
-  justify-content: center;
-  background: rgba(0, 0, 0, 0.55);
-  z-index: 40;
-}
-
-.deck-viewer.is-visible {
-  display: flex;
-}
-
-.deck-viewer-inner {
-  width: 100%;
-  max-width: 480px;
-  background: var(--bg);
-  border-radius: 24px 24px 0 0;
-  border-top: 1px solid var(--border-soft);
-  padding: 14px 16px 18px;
-  box-shadow: 0 -18px 40px rgba(0, 0, 0, 0.7);
-}
-
-.deck-viewer-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  margin-bottom: 10px;
-}
-
-.deck-viewer-title {
-  margin: 0;
-  font-size: 16px;
-}
-
-.deck-viewer-actions {
-  display: flex;
-  gap: 6px;
-}
-
-/* Flashcard */
+/* Flashcard viewer */
 
 .flashcard-wrapper {
   margin-top: 6px;
@@ -416,9 +370,9 @@ body {
 .flashcard {
   position: relative;
   width: 100%;
-  min-height: 140px;
+  min-height: 150px;
   border-radius: var(--radius-lg);
-  background: var(--bg-soft);
+  background: var(--bg-softer);
   border: 1px solid var(--border-soft);
   transform-style: preserve-3d;
   transition: transform 0.4s ease;
@@ -450,7 +404,8 @@ body {
 }
 
 .flashcard-controls,
-.flashcard-crud {
+.flashcard-crud,
+.flashcard-deck-actions {
   display: flex;
   gap: 8px;
   margin-bottom: 8px;
@@ -476,7 +431,7 @@ body {
   display: none;
   align-items: flex-end;
   justify-content: center;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.7);
   z-index: 45;
 }
 
@@ -487,11 +442,11 @@ body {
 .note-editor {
   width: 100%;
   max-width: 480px;
-  background: var(--bg);
+  background: #000000;
   border-radius: 24px 24px 0 0;
   border-top: 1px solid var(--border-soft);
   padding: 14px 16px 18px;
-  box-shadow: 0 -18px 40px rgba(0, 0, 0, 0.7);
+  box-shadow: 0 -18px 40px rgba(0, 0, 0, 0.9);
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -509,7 +464,7 @@ body {
   border-radius: var(--radius-pill);
   border: 1px solid var(--border-soft);
   padding: 8px 12px;
-  background: var(--bg-soft);
+  background: #000000;
   color: var(--text);
   outline: none;
   font-size: 14px;
@@ -566,7 +521,7 @@ body {
 
 .timer-ring-bg {
   fill: none;
-  stroke: rgba(255, 255, 255, 0.08);
+  stroke: rgba(255, 255, 255, 0.12);
   stroke-width: 10;
 }
 
@@ -610,7 +565,7 @@ body {
   border-radius: var(--radius-pill);
   border: 1px solid var(--border-soft);
   padding: 6px 10px;
-  background: var(--bg-soft);
+  background: #000000;
   color: var(--text);
   width: 80px;
 }
@@ -628,18 +583,14 @@ body {
 }
 
 .app-main::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.25);
   border-radius: 999px;
 }
 
-/* Responsive tweak */
+/* Responsive */
 
 @media (min-width: 520px) {
   body {
-    padding: 20px;
-  }
-
-  #onboarding-screen {
-    padding: 20px;
+    padding: 0;
   }
 }
