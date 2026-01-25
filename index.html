@@ -169,15 +169,20 @@
               </div>
             </header>
 
+            <!-- Apple Notes–style toolbar -->
             <div class="note-toolbar">
-              <button data-command="bold" class="toolbar-button">bold</button>
-              <button data-command="italic" class="toolbar-button">italic</button>
-              <button data-command="insertUnorderedList" class="toolbar-button">• list</button>
+              <button data-command="bold" class="toolbar-button">Bold</button>
+              <button data-command="italic" class="toolbar-button">Italic</button>
+              <button data-command="formatBlock" data-value="h1" class="toolbar-button">H1</button>
+              <button data-command="formatBlock" data-value="h2" class="toolbar-button">H2</button>
+              <button data-command="insertUnorderedList" class="toolbar-button">Bullet</button>
+              <button data-command="formatBlock" data-value="blockquote" class="toolbar-button">Quote</button>
             </div>
 
             <div id="note-editor-content" class="note-editor-content" contenteditable="true"></div>
 
-            <button id="save-note-button" class="primary-button full-width">save note</button>
+            <!-- Fixed save button -->
+            <button id="save-note-button" class="primary-button full-width save-note-fixed">save note</button>
 
           </div>
         </div>
@@ -195,9 +200,9 @@
         <section class="glass-card timer-card">
 
           <div class="timer-ring-wrapper">
-            <svg class="timer-ring" width="220" height="220">
-              <circle class="timer-ring-bg" cx="110" cy="110" r="100" />
-              <circle class="timer-ring-progress" cx="110" cy="110" r="100" />
+            <svg class="timer-ring" width="180" height="180">
+              <circle class="timer-ring-bg" cx="90" cy="90" r="80" />
+              <circle class="timer-ring-progress" cx="90" cy="90" r="80" />
             </svg>
 
             <div class="timer-center">

@@ -19,7 +19,7 @@ let remainingSeconds = totalSeconds;
 
 /* Timer ring setup */
 const ring = document.querySelector(".timer-ring-progress");
-const radius = 100;
+const radius = 80;
 const circumference = 2 * Math.PI * radius;
 
 if (ring) {
@@ -456,7 +456,8 @@ document.getElementById("delete-note-button")?.addEventListener("click", () => {
 document.querySelectorAll(".toolbar-button").forEach(btn => {
   btn.addEventListener("click", () => {
     const cmd = btn.dataset.command;
-    document.execCommand(cmd, false, null);
+    const value = btn.dataset.value || null;
+    document.execCommand(cmd, false, value);
     noteEditorContent.focus();
   });
 });
