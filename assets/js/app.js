@@ -130,20 +130,6 @@ document.getElementById("onboarding-finish").addEventListener("click", () => {
   finishOnboarding();
 });
 
-document.getElementById("onboarding-skip").addEventListener("click", () => {
-  finishOnboarding();
-});
-
-document.querySelectorAll(".onboarding-back-button").forEach(btn => {
-  btn.addEventListener("click", () => {
-    goToOnboardingStep(parseInt(btn.dataset.backStep, 10));
-  });
-});
-
-onboardingScreen.style.display = "flex";
-appRoot.style.display = "none";
-goToOnboardingStep(1);
-
 /* =========================
    NAVIGATION
 ========================= */
