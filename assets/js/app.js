@@ -304,6 +304,7 @@ function renderFlashcard() {
   flashcardBack.textContent = card.back;
   flashcardProgress.textContent = `${currentCardIndex + 1} / ${deck.length}`;
 }
+
 /* =========================
    FLASHCARD CONTROLS
 ========================= */
@@ -377,7 +378,7 @@ document.getElementById("delete-card-button").addEventListener("click", () => {
 });
 
 /* =========================
-   ADD DECK BUTTON (FIXED)
+   ADD DECK BUTTON
 ========================= */
 
 document.getElementById("add-deck-button").addEventListener("click", () => {
