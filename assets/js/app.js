@@ -174,6 +174,7 @@ navButtons.forEach(btn => {
     const target = btn.dataset.screenTarget;
 
     navButtons.forEach(b => b.classList.remove("is-active"));
+    btn.addClass = "is-active";
     btn.classList.add("is-active");
 
     showScreen(target);
@@ -264,7 +265,6 @@ function openDeck(name) {
   flashcard.classList.remove("is-flipped");
   renderFlashcard();
 
-  // switch to flashcard viewer screen
   showScreen("flashcard-viewer");
   navButtons.forEach(b => b.classList.remove("is-active"));
   document

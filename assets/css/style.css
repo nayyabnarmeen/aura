@@ -2,7 +2,7 @@
   --bg: #000000;
   --bg-soft: rgba(255, 255, 255, 0.06);
   --bg-softer: rgba(255, 255, 255, 0.03);
-  --accent: #7c5cff; /* tiny purple accent */
+  --accent: #7c5cff;
   --accent-soft: rgba(124, 92, 255, 0.18);
   --text: #ffffff;
   --text-soft: #c7c7d9;
@@ -38,15 +38,17 @@ body {
   margin: 0;
   padding: 0;
   height: 100%;
+  width: 100%;
 }
 
 body {
-  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   background: #000000;
   color: var(--text);
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: stretch;
+  overflow: hidden; /* no page scroll, only app scrolls */
 }
 
 /* App shell */
@@ -55,19 +57,16 @@ body {
   width: 100%;
   max-width: 480px;
   height: 100vh;
-  display: none;
+  display: flex;
   flex-direction: column;
   background: #000000;
-  border-radius: 0;
-  border: none;
-  box-shadow: none;
-  overflow: hidden;
-  position: relative;
+  overflow: hidden; /* content scrolls inside app-main */
 }
 
 .app-main {
   flex: 1;
-  padding: 16px 16px 12px;
+  padding: 16px;
+  padding-bottom: 80px; /* space so content never hides behind navbar */
   overflow-y: auto;
 }
 
@@ -298,6 +297,11 @@ body {
   justify-content: space-around;
   background: #000000;
   border-top: 1px solid var(--border-soft);
+
+  position: sticky;
+  bottom: 0;
+  left: 0;
+  right: 0;
 }
 
 .bottom-nav-item {
