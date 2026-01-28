@@ -3,13 +3,17 @@
   --text: #000000;
   --text-soft: #555555;
 
+
   --glass: rgba(255, 255, 255, 0.6);
   --glass-border: rgba(0, 0, 0, 0.08);
+
 
   --grad-start: #6a00ff;
   --grad-end: #b100ff;
 
+
   --btn-border: 1.5px;
+
 
   --radius-lg: 22px;
   --radius-md: 16px;
@@ -17,15 +21,18 @@
   --blur: 22px;
 }
 
+
 /* Dark theme */
 [data-theme="dark"] {
   --bg: #000000;
   --text: #ffffff;
   --text-soft: #cccccc;
 
+
   --glass: rgba(255, 255, 255, 0.06);
   --glass-border: rgba(255, 255, 255, 0.18);
 }
+
 
 /* RESET */
 *,
@@ -34,6 +41,7 @@
   box-sizing: border-box;
 }
 
+
 html,
 body {
   margin: 0;
@@ -41,6 +49,7 @@ body {
   height: 100%;
   width: 100%;
 }
+
 
 body {
   background: var(--bg);
@@ -51,6 +60,7 @@ body {
   align-items: stretch;
   overflow-y: auto;
 }
+
 
 /* APP SHELL */
 #app-root {
@@ -63,11 +73,13 @@ body {
   position: relative;
 }
 
+
 .app-main {
   flex: 1;
   padding: 16px;
   padding-bottom: 100px;
 }
+
 
 /* ONBOARDING */
 #onboarding-screen {
@@ -80,6 +92,7 @@ body {
   z-index: 50;
 }
 
+
 .onboarding-steps {
   width: 100vw;
   max-width: 480px;
@@ -88,6 +101,7 @@ body {
   transition: transform 0.4s ease;
 }
 
+
 .onboarding-card {
   min-width: 100vw;
   padding: 32px 22px;
@@ -95,16 +109,19 @@ body {
   flex-direction: column;
 }
 
+
 .onboarding-header {
   height: 32px;
   display: flex;
   align-items: center;
 }
 
+
 .onboarding-back-placeholder {
   width: 32px;
   height: 32px;
 }
+
 
 .onboarding-back-button {
   width: 32px;
@@ -120,6 +137,7 @@ body {
   cursor: pointer;
 }
 
+
 /* BODY */
 .onboarding-body {
   flex: 1;
@@ -129,11 +147,13 @@ body {
   justify-content: center;
 }
 
+
 .onboarding-title {
   font-size: 28px;
   font-weight: 600;
   margin: 0;
 }
+
 
 .onboarding-subtitle {
   margin: 0;
@@ -141,10 +161,12 @@ body {
   font-size: 14px;
 }
 
+
 .onboarding-label {
   font-size: 13px;
   color: var(--text-soft);
 }
+
 
 .onboarding-input {
   border-radius: var(--radius-pill);
@@ -155,10 +177,12 @@ body {
   font-size: 16px;
 }
 
+
 [data-theme="dark"] .onboarding-input {
   background: #111111;
   color: #ffffff;
 }
+
 
 /* Checkbox pills */
 .checkbox-pill {
@@ -173,13 +197,16 @@ body {
   font-size: 13px;
 }
 
+
 .checkbox-pill input {
   display: none;
 }
 
+
 .checkbox-pill input:checked + span {
   color: var(--grad-start);
 }
+
 
 /* SCREENS */
 .aura-screen {
@@ -187,14 +214,17 @@ body {
   animation: fadeIn 0.2s ease-out;
 }
 
+
 .aura-screen.is-active {
   display: block;
 }
+
 
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(4px); }
   to { opacity: 1; transform: translateY(0); }
 }
+
 
 /* HEADERS */
 .screen-header {
@@ -204,17 +234,20 @@ body {
   margin-bottom: 16px;
 }
 
+
 .screen-eyebrow {
   margin: 0;
   font-size: 12px;
   color: var(--text-soft);
 }
 
+
 .screen-title {
   margin: 2px 0 0;
   font-size: 24px;
   font-weight: 600;
 }
+
 
 /* GLASS CARDS */
 .glass-card {
@@ -226,11 +259,13 @@ body {
   margin-bottom: 16px;
 }
 
+
 .card-title {
   margin: 0 0 10px;
   font-size: 16px;
   font-weight: 500;
 }
+
 
 .hint-text {
   margin-top: 8px;
@@ -238,10 +273,12 @@ body {
   color: var(--text-soft);
 }
 
+
 .stats-line {
   margin: 4px 0;
   font-size: 14px;
 }
+
 
 /* BUTTONS */
 .primary-button,
@@ -257,6 +294,7 @@ body {
   transition: 0.15s ease;
 }
 
+
 .primary-button,
 .ghost-button {
   border: var(--btn-border) solid transparent;
@@ -264,10 +302,12 @@ body {
               linear-gradient(135deg, var(--grad-start), var(--grad-end)) border-box;
 }
 
+
 .primary-button:hover,
 .ghost-button:hover {
   opacity: 0.8;
 }
+
 
 .icon-button {
   border: none;
@@ -275,9 +315,11 @@ body {
   color: var(--text-soft);
 }
 
+
 .full-width { width: 100%; }
 .small { font-size: 12px; padding: 6px 10px; }
 .danger { color: #d00000; }
+
 
 /* TODO LIST */
 .todo-list {
@@ -288,6 +330,7 @@ body {
   flex-direction: column;
   gap: 6px;
 }
+
 
 .todo-item {
   background: var(--glass);
@@ -301,12 +344,14 @@ body {
   position: relative;
 }
 
+
 /* DECKS */
 .deck-grid {
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
+
 
 .deck-card {
   background: var(--glass);
@@ -315,10 +360,13 @@ body {
   padding: 12px;
   cursor: pointer;
 }
+
+
 /* FLASHCARDS */
 .flashcard-wrapper {
   position: relative;
 }
+
 
 .flashcard {
   position: relative;
@@ -331,9 +379,11 @@ body {
   transition: transform 0.4s ease;
 }
 
+
 .flashcard.is-flipped {
   transform: rotateY(180deg);
 }
+
 
 .flashcard-face {
   position: absolute;
@@ -346,15 +396,18 @@ body {
   text-align: center;
 }
 
+
 .flashcard-back {
   transform: rotateY(180deg);
 }
+
 
 .flashcard-progress {
   margin-top: 8px;
   font-size: 12px;
   color: var(--text-soft);
 }
+
 
 .flashcard-controls,
 .flashcard-crud,
@@ -363,6 +416,7 @@ body {
   gap: 8px;
   margin-top: 10px;
 }
+
 
 /* FLASHCARD MODAL */
 .modal-overlay {
@@ -375,9 +429,11 @@ body {
   z-index: 300;
 }
 
+
 .modal-overlay.is-visible {
   display: flex;
 }
+
 
 .modal-card {
   width: 100%;
@@ -390,6 +446,7 @@ body {
   flex-direction: column;
   gap: 14px;
 }
+
 
 .modal-textarea {
   width: 100%;
@@ -404,16 +461,19 @@ body {
   resize: vertical;
 }
 
+
 [data-theme="dark"] .modal-textarea {
   background: #111111;
   color: #ffffff;
 }
+
 
 .modal-actions {
   display: flex;
   gap: 10px;
   margin-top: 10px;
 }
+
 
 /* NOTES */
 .notes-grid {
@@ -422,9 +482,11 @@ body {
   gap: 10px;
 }
 
+
 .notes-search-row {
   margin-bottom: 10px;
 }
+
 
 /* NOTE EDITOR OVERLAY — FIXED */
 .note-editor-overlay {
@@ -437,9 +499,11 @@ body {
   z-index: 400;
 }
 
+
 .note-editor-overlay.is-visible {
   display: flex !important;
 }
+
 
 .note-editor {
   position: fixed;
@@ -454,6 +518,7 @@ body {
   height: 100vh;
 }
 
+
 /* TIMER */
 .timer-card {
   display: flex;
@@ -462,11 +527,13 @@ body {
   gap: 16px;
 }
 
+
 .timer-ring-wrapper {
   position: relative;
   width: 220px;
   height: 220px;
 }
+
 
 .timer-ring {
   width: 220px;
@@ -474,11 +541,13 @@ body {
   transform: rotate(-90deg);
 }
 
+
 .timer-ring-bg {
   fill: none;
   stroke: #ddd;
   stroke-width: 10;
 }
+
 
 .timer-ring-progress {
   fill: none;
@@ -487,6 +556,7 @@ body {
   stroke-linecap: round;
 }
 
+
 .timer-center {
   position: absolute;
   top: 50%;
@@ -494,16 +564,19 @@ body {
   transform: translate(-50%, -50%);
 }
 
+
 .timer-display {
   font-size: 30px;
   font-weight: 600;
 }
+
 
 .timer-buttons {
   display: flex;
   gap: 12px;
   margin-top: 14px;
 }
+
 
 /* NAVBAR */
 .bottom-nav {
@@ -520,6 +593,7 @@ body {
   z-index: 999;
 }
 
+
 .bottom-nav-item {
   flex: 1;
   background: transparent;
@@ -529,14 +603,17 @@ body {
   text-transform: lowercase;
 }
 
+
 .bottom-nav-item.is-active {
   color: var(--grad-start);
 }
+
 
 /* SCROLLBAR */
 .app-main::-webkit-scrollbar {
   width: 4px;
 }
+
 
 .app-main::-webkit-scrollbar-thumb {
   background: #bbb;
@@ -546,24 +623,28 @@ body {
    NOTE EDITOR — APPLE NOTES STYLE UPGRADE
 ========================================================= */
 
+
 /* Remove tags row completely */
 .note-tags-row {
   display: none !important;
 }
+
 
 /* Full-height editor layout */
 .note-editor {
   display: flex;
   flex-direction: column;
   height: 100vh;
-  padding-bottom: 140px; /* space for save + delete buttons */
+  padding-bottom: 90px; /* space for save button */
 }
+
 
 /* Cleaner header */
 .note-editor-header {
   padding: 18px 22px;
   border-bottom: 1px solid rgba(255,255,255,0.08);
 }
+
 
 /* Title input — Apple Notes style */
 .note-title-input {
@@ -578,6 +659,7 @@ body {
   margin: 0;
 }
 
+
 /* Toolbar — minimal, subtle */
 .note-toolbar {
   display: flex;
@@ -585,13 +667,102 @@ body {
   padding: 12px 20px;
   border-bottom: 1px solid rgba(255,255,255,0.08);
 }
+
+
+.note-toolbar .toolbar-button {
+  background: transparent;
+  color: inherit;
+  border: 1px solid rgba(255,255,255,0.25);
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+
+/* Apple Notes–style writing area */
+.note-editor-content {
+  flex: 1;
+  padding: 24px;
+  font-size: 18px;
+  line-height: 1.7;
+  overflow-y: auto;
+  background: transparent;
+  color: inherit;
+  letter-spacing: 0.2px;
+}
+
+
+/* Save button fixed above navbar */
+.save-note-fixed {
+  position: fixed;
+  bottom: 70px; /* sits above bottom nav */
+  left: 0;
+  width: 100%;
+  padding: 16px;
+  border-radius: 0;
+  z-index: 9999;
+  background: rgba(255, 255, 255, 0.08) !important;
+  backdrop-filter: blur(12px);
+  color: inherit !important;
+  border: 1px solid rgba(255,255,255,0.2);
+}
+
+
+/* Transparent buttons with white text (kept from before) */
+.note-editor .ghost-button,
+.note-editor .icon-button,
+.note-editor .primary-button {
+  background: transparent !important;
+  color: inherit !important;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+}
+/* =========================================================
+   NOTE EDITOR — FINAL APPLE NOTES STYLE UPGRADE
+========================================================= */
+
+
+/* Remove tags row completely */
+.note-tags-row {
+  display: none !important;
+}
+
+
+/* Full-height editor layout */
+.note-editor {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  padding-bottom: 140px; /* space for save + delete buttons */
+}
+
+
+/* Cleaner header */
+.note-editor-header {
+  padding: 18px 22px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+
+/* Title input — Apple Notes style */
+.note-title-input {
+  background: transparent;
+  border: none;
+  outline: none;
+  width: 100%;
+  font-size: 24px;
+  font-weight: 600;
+  color: inherit;
+  padding: 0;
+  margin: 0;
+}
+
+
+/* Toolbar — minimal, subtle */
 .note-toolbar {
   display: flex;
   gap: 10px;
   padding: 12px 20px;
   border-bottom: 1px solid rgba(255,255,255,0.08);
-  flex-wrap: wrap;          /* allow wrapping */
-  overflow-x: hidden;       /* no horizontal scroll */
 }
 
 
@@ -606,6 +777,14 @@ body {
   -webkit-user-select: none;
   -webkit-tap-highlight-color: transparent;
 }
+
+
+/* Prevent toolbar from stealing focus */
+.note-toolbar .toolbar-button:active,
+.note-toolbar .toolbar-button:focus {
+  outline: none;
+}
+
 
 /* Apple Notes–style writing area */
 .note-editor-content {
@@ -622,9 +801,11 @@ body {
   margin: 20px;
 }
 
+
+/* Placeholder for contenteditable */
 .note-editor-content:empty:before {
   content: "Start writing…";
-  color: var(--text-soft);
+  color: rgba(255,255,255,0.4);
   pointer-events: none;
   font-style: italic;
 }
@@ -645,6 +826,7 @@ body {
   border: 1px solid rgba(255,255,255,0.2);
 }
 
+
 /* Big delete button */
 .delete-note-fixed {
   position: fixed;
@@ -660,108 +842,6 @@ body {
   border: 1px solid rgba(255,0,0,0.3);
   font-size: 15px;
 }
-.note-editor-header {
-  padding: 18px 22px;
-  border-bottom: 1px solid rgba(255,255,255,0.08);
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-}
 
-.note-title-input {
-  flex: 1;                 /* title takes left side */
-}
 
-.note-editor-actions {
-  display: flex;
-  gap: 8px;
-}
-/* =========================================================
-   NOTE EDITOR — APPLE NOTES STYLE UPGRADE (SAFE)
-========================================================= */
 
-/* Remove tags row */
-.note-tags-row {
-  display: none !important;
-}
-
-/* Full-height editor layout */
-.note-editor {
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-  padding-bottom: 90px;
-}
-
-/* Header spacing */
-.note-editor-header {
-  padding: 18px 22px;
-  border-bottom: 1px solid rgba(255,255,255,0.08);
-  display: flex;
-  align-items: flex-start;
-  gap: 14px;
-}
-
-.note-title-input {
-  flex: 1;
-}
-
-/* Action buttons spacing */
-.note-editor-actions {
-  display: flex;
-  gap: 10px;
-}
-
-/* Close button slightly bigger */
-.note-editor .icon-button {
-  padding: 8px 12px;
-  font-size: 16px;
-}
-
-/* Toolbar — no horizontal scroll */
-.note-toolbar {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  padding: 12px 20px;
-  border-bottom: 1px solid rgba(255,255,255,0.08);
-  overflow-x: hidden;
-}
-
-/* Writing area */
-.note-editor-content {
-  flex: 1;
-  padding: 24px;
-  font-size: 18px;
-  line-height: 1.7;
-  overflow-y: auto;
-  background: transparent;
-  color: inherit;
-  letter-spacing: 0.2px;
-  border: 1px solid rgba(255,255,255,0.15);
-  border-radius: 14px;
-  margin: 20px;
-}
-
-/* Placeholder visible in light + dark */
-.note-editor-content:empty:before {
-  content: "Start writing…";
-  color: var(--text-soft);
-  pointer-events: none;
-  font-style: italic;
-}
-
-/* Save button */
-.save-note-fixed {
-  position: fixed;
-  bottom: 70px;
-  left: 0;
-  width: 100%;
-  padding: 16px;
-  border-radius: 0;
-  z-index: 9999;
-  background: rgba(255, 255, 255, 0.08) !important;
-  backdrop-filter: blur(12px);
-  color: inherit !important;
-  border: 1px solid rgba(255,255,255,0.2);
-}
