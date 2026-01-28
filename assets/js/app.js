@@ -1,9 +1,4 @@
-/* =========================================================
-  HELPERS + GLOBAL STATE
- ========================================================= 
- */
- 
- function $(id) {
+function $(id) {
   return document.getElementById(id);
  }
  
@@ -25,7 +20,6 @@
  let totalSeconds = 1500;
  let remainingSeconds = 1500;
 
- /* ELEMENTS */
  const appRoot = $("app-root");
  const notesList = $("notes-list");
  const notesSearchInput = $("notes-search-input");
@@ -48,17 +42,11 @@
  const hourInput = $("timer-hours");
  const minuteInput = $("timer-minutes");
  
- /* EVENT HELPER */
  function on(id, event, handler) {
   const el = $(id);
   if (el) el.addEventListener(event, handler);
  }
- 
- /* =========================================================
-  SCREEN SWITCHING
- ========================================================= 
- */
- 
+
  function showScreen(name) {
   document.querySelectorAll(".aura-screen").forEach(screen => {
     screen.classList.remove("is-active");
@@ -71,11 +59,6 @@
     btn.classList.toggle("is-active", btn.dataset.screenTarget === name);
   });
  }
- 
- /* =========================================================
-  ONBOARDING
- ========================================================= 
- */
  
  const onboardingScreen = $("onboarding-screen");
  
@@ -114,7 +97,6 @@
   $("home-greeting").textContent = `hello, ${userName}`;
  });
 
- /* BACK BUTTONS */
  document.querySelectorAll(".onboarding-back-button").forEach(btn => {
   btn.addEventListener("click", () => {
     const backStep = btn.dataset.backStep;
@@ -125,11 +107,6 @@
   });
  });
 
- /* =========================================================
-  NAVIGATION
- ========================================================= 
- */
- 
  document.querySelectorAll(".bottom-nav-item").forEach(btn => {
   btn.addEventListener("click", () => {
     const target = btn.dataset.screenTarget;
@@ -137,11 +114,6 @@
   });
  });
 
- /* =========================================================
-  TODOS
- ========================================================= 
- */
- 
  function saveTodos() {
   localStorage.setItem("aura-todos", JSON.stringify(todos));
  }
@@ -179,11 +151,6 @@
   renderTodos();
  });
 
- /* =========================================================
-  DECKS + FLASHCARDS
- ========================================================= 
- */
- 
  function saveDecks() {
   localStorage.setItem("aura-decks", JSON.stringify(decks));
  }
@@ -373,11 +340,6 @@
  
   showScreen("flashcards");
  });
-
- /* =========================================================
-  NOTES (FIXED)
- ========================================================= 
- */
  
  function saveNotes() {
   localStorage.setItem("aura-notes", JSON.stringify(notes));
@@ -418,8 +380,7 @@
     notesList.appendChild(card);
   });
  }
- 
- /* OPEN NOTE EDITOR */
+
  function openNoteEditor(index = null) {
   noteEditorOverlay.classList.add("is-visible");
   noteEditorOverlay.style.display = "flex";
@@ -444,7 +405,6 @@
   }
  }
  
- /* ⭐ THE TWO MISSING LISTENERS ⭐ */
  on("add-note-button", "click", () => {
   openNoteEditor(null);
  });
@@ -453,13 +413,11 @@
   openNoteEditor(null);
  });
  
- /* CLOSE EDITOR */
  on("close-note-editor", "click", () => {
   noteEditorOverlay.classList.remove("is-visible");
   noteEditorOverlay.style.display = "none";
  });
 
- /* SAVE NOTE */
  on("save-note-button", "click", () => {
   const title = noteEditorTitle.value.trim();
   const content = noteEditorContent.innerHTML.trim();
@@ -500,7 +458,6 @@
   noteEditorOverlay.style.display = "none";
  });
 
- /* DELETE NOTE */
  on("delete-note-button", "click", () => {
   const editing = noteEditorOverlay.dataset.editing;
   if (editing === "new") {
@@ -519,20 +476,17 @@
   noteEditorOverlay.style.display = "none";
  });
 
- /* PIN NOTE */
  on("pin-note-button", "click", () => {
   const pinned = pinNoteButton.dataset.pinned === "true";
   pinNoteButton.dataset.pinned = pinned ? "false" : "true";
   pinNoteButton.textContent = pinned ? "pin" : "unpin";
  });
 
- /* SEARCH NOTES */
  notesSearchInput.addEventListener("input", () => {
   noteSearchQuery = notesSearchInput.value.trim();
   renderNotes();
  });
 
- /* TOOLBAR */
  document.querySelectorAll(".toolbar-button").forEach(btn => {
   btn.addEventListener("click", () => {
     const command = btn.dataset.command;
@@ -547,10 +501,6 @@
   });
  });
 
- /* =========================================================
-  THEME TOGGLE
- ========================================================= 
- */
  
  on("settings-theme-toggle", "click", () => {
   const root = document.documentElement;
@@ -559,11 +509,6 @@
   root.setAttribute("data-theme", next);
   localStorage.setItem("aura-theme", next);
  });
-
- /* =========================================================
-  NEW FIX: CHANGE NAME BUTTON 
- ========================================================= 
- */
 
  on("settings-change-name", "click", () => {
   const newName = prompt("What should I call you instead?", userName);
@@ -579,11 +524,6 @@
   }
  });
 
- /* =========================================================
-  TIMER + STATS
- ========================================================= 
- */
- 
  function savePomodoroStats() {
   localStorage.setItem("aura-pomodoro-stats", JSON.stringify(pomodoroStats));
  }
@@ -663,11 +603,6 @@
   updateRing();
   $("pomodoro-toggle").textContent = "start";
  });
-
- /* =========================================================
-  INIT
- ========================================================= 
- */
 
  function init() {
   renderTodos();
