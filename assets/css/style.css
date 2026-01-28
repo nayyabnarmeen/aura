@@ -543,3 +543,91 @@ body {
   background: #bbb;
   border-radius: 999px;
 }
+/* =========================================================
+   NOTE EDITOR — APPLE NOTES STYLE UPGRADE
+========================================================= */
+
+/* Remove tags row completely */
+.note-tags-row {
+  display: none !important;
+}
+
+/* Full-height editor layout */
+.note-editor {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  padding-bottom: 90px; /* space for save button */
+}
+
+/* Cleaner header */
+.note-editor-header {
+  padding: 18px 22px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+/* Title input — Apple Notes style */
+.note-title-input {
+  background: transparent;
+  border: none;
+  outline: none;
+  width: 100%;
+  font-size: 24px;
+  font-weight: 600;
+  color: inherit;
+  padding: 0;
+  margin: 0;
+}
+
+/* Toolbar — minimal, subtle */
+.note-toolbar {
+  display: flex;
+  gap: 10px;
+  padding: 12px 20px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.note-toolbar .toolbar-button {
+  background: transparent;
+  color: inherit;
+  border: 1px solid rgba(255,255,255,0.25);
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+/* Apple Notes–style writing area */
+.note-editor-content {
+  flex: 1;
+  padding: 24px;
+  font-size: 18px;
+  line-height: 1.7;
+  overflow-y: auto;
+  background: transparent;
+  color: inherit;
+  letter-spacing: 0.2px;
+}
+
+/* Save button fixed above navbar */
+.save-note-fixed {
+  position: fixed;
+  bottom: 70px; /* sits above bottom nav */
+  left: 0;
+  width: 100%;
+  padding: 16px;
+  border-radius: 0;
+  z-index: 9999;
+  background: rgba(255, 255, 255, 0.08) !important;
+  backdrop-filter: blur(12px);
+  color: inherit !important;
+  border: 1px solid rgba(255,255,255,0.2);
+}
+
+/* Transparent buttons with white text (kept from before) */
+.note-editor .ghost-button,
+.note-editor .icon-button,
+.note-editor .primary-button {
+  background: transparent !important;
+  color: inherit !important;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+}
